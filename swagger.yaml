@@ -1,0 +1,58 @@
+openapi: "3.0.0"
+info:
+  title: Toursim App
+  description: This is a api documentaion for a Tousism app.
+  version: 1.1.0
+  contact:
+    email: "vuddagiripraveen@gmail"
+    url: "https://www.linkedin.com/in/praveenvuddagiri/"
+
+
+servers:
+  - url: "{protocol}://localhost:4000/api/{version}"
+    description: For local host. 
+    variables:
+      version:
+        enum:
+          - v1
+          - v2
+        default: v1
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+
+
+components:
+  securitySchemes:
+    cookieAuth:         
+      type: apiKey
+      in: cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /:
+    get:
+      tags:
+        - String
+      summary: returns a greet message from Tripify
+      responses: 
+        '200': 
+          description: Request Success
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  success:
+                    type: boolean
+                  greeting: 
+                    type: string
+        '400':
+          description: Bad request.
+        '500':
+          description: Internal Server error.
