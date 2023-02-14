@@ -16,6 +16,9 @@ app.use(cors({
 }));
 
 
+// for view engine for only using forgot password
+app.set('view engine', "ejs");
+
 //swagger docs related
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
@@ -32,6 +35,11 @@ app.use(Morgan('tiny'));
 const home = require('./routes/home')
 const user = require('./routes/user');
 const morgan = require('morgan');
+
+//cookie access
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 
 //middleware routes
 

@@ -71,7 +71,7 @@ exports.forgotPassword = Bigpromise(async (req,res,next) => {
 
      await user.save({validateBeforeSave: false});
 
-     const myUrl = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${forgotToken}`
+     const myUrl = `${req.protocol}://${req.get("host")}/api/v1/password/form/${forgotToken}`
 
      const message =  `Copy paste this link in your URL and hit enter \n\n ${myUrl} \n \n Or  \n `
      
@@ -94,6 +94,13 @@ exports.forgotPassword = Bigpromise(async (req,res,next) => {
           await user.save({validateBeforeSave: false});
           return next(new CustomError(error.message, 500));
      }
+})
+
+exports.ResetPasswordFormRender = Bigpromise(async (req,res,next) => {
+     const token = req.params.token;
+
+     res.render('forgotPasswordForm', {token});
+     
 })
 
 exports.passwordReset = Bigpromise(async (req,res,next) => {
@@ -123,8 +130,9 @@ exports.passwordReset = Bigpromise(async (req,res,next) => {
      user.forgotPasswordToken = undefined
      await user.save()
 
-     //send a JSON response   
-     cookieToken(user,res); 
+     //send a JSON response 
+     res.status(200).send("Password updated successfully, Go ahead and Login to our application.");
+     // cookieToken(user,res); 
 })
 
 exports.getLoggedInUserDetails = Bigpromise(async (req,res,next) => {
@@ -136,3 +144,109 @@ exports.getLoggedInUserDetails = Bigpromise(async (req,res,next) => {
           user, 
      });
 });
+
+exports.changePassword = Bigpromise(async (req,res,next) => {
+     
+     const userId = req.user.id;
+
+     const user = await User.findById(userId).select("+password");
+
+     const isCorrectOldPassword = await user.isValidPassword(req.body.oldPassword)
+
+     if(!isCorrectOldPassword){
+          return next(new CustomError('old password is incorrect',400));
+     }
+
+     user.password = req.body.password;
+
+     await user.save()
+
+     cookieToken(user,res);
+
+});
+
+exports.updateUserDetails = Bigpromise(async (req,res,next) => {
+     
+     const userId = req.user.id;
+     const newData = {
+          name: req.body.name,
+          email: req.body.email
+     }
+
+     const user = await User.findByIdAndUpdate(userId, newData,{
+          new: true,
+          runValidators: true,
+          useFindAndModify: false,
+     });
+
+     res.status(200).json({
+          success: true,
+     });
+});
+
+
+exports.adminAllUser = Bigpromise(async (req,res,next) => {
+   const users = await User.find({role: "user"})
+   res.status(200).json({
+     success: true,
+     users,
+   })
+});
+
+
+exports.adminAllServiceproviders = Bigpromise(async (req,res,next) => {
+     const users = await User.find({role: "serviceprovider"})
+     res.status(200).json({
+       success: true,
+       users,
+     })
+  });
+
+  
+exports.adminGetOneUser = Bigpromise(async (req,res,next) => {
+     const user = await User.findById(req.params.id)
+
+     if(user === null){
+          next(new CustomError("No user found", 400));
+     }
+     res.status(200).json({
+       success: true,
+       user,
+     })
+  });
+
+exports.adminUpdateOneUserDetails = Bigpromise(async (req,res,next) => {
+     
+     const userId = req.user.id;
+     const newData = {
+          name: req.body.name,
+          email: req.body.email
+     }
+
+     const user = await User.findByIdAndUpdate(userId, newData,{
+          new: true,
+          runValidators: true,
+          useFindAndModify: false,
+     });
+
+     res.status(200).json({
+          success: true,
+     });
+});
+
+
+exports.adminDeleteOneUser = Bigpromise(async (req,res,next) => {
+     const userId = req.params.id;
+
+     const user = await User.findById(userId);
+
+     if(user === null){
+          next(new CustomError("No user found", 400));
+     }
+
+     await user.remove()
+
+     res.status(200).json({
+       success: true
+     })
+  });

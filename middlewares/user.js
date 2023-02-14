@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken')
 
 
 exports.isLoggedIn = Bigpromise(async(req,res,next) => {
+    
     const token = 
-        req.Cookies.token || req.header("Authorization").replace('Bearer ', "");
+        req.cookies.token || (req.header("Authorization") ? req.header("Authorization").replace('Bearer ', "") : null) 
 
-    console.log(token+"Here is the token");
     if(!token){
         return next(new CustomError('Login first to access this page', 401))
     }
@@ -19,3 +19,13 @@ exports.isLoggedIn = Bigpromise(async(req,res,next) => {
 
     next();
 })
+
+
+exports.customRole = (...roles) => {
+    return (req, res, next) =>{
+        if(!roles.includes(req.user.role)){
+            return next(new CustomError("You are not allowed for this resource",403))
+        }
+        next()
+    }
+}
