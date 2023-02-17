@@ -236,9 +236,8 @@ exports.adminUpdateOneUserDetails = Bigpromise(async (req,res,next) => {
 
 
 exports.adminDeleteOneUser = Bigpromise(async (req,res,next) => {
-     const userId = req.params.id;
 
-     const user = await User.findById(userId);
+     const user = await User.findById(req.params.id);
 
      if(user === null){
           next(new CustomError("No user found", 400));
