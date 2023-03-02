@@ -44,6 +44,18 @@ exports.deleteIsland = Bigpromise(async (req, res, next) => {
         next(new CustomError("No Island found", 401));
     }
 
+    //check wheather the island is in use or not
+    req.query.island = req.params.id;
+
+    const placesObj = await new whereCaluse(place.find(), req.query).filter();
+    
+    let places = await placesObj.base
+
+    if(places.length!==0){
+        return next(new CustomError("Island is used somewhere, cannot be deleted.", 401));
+    }
+
+
     const imageId = island.image.id;
 
     await cloudinary.v2.uploader.destroy(imageId);

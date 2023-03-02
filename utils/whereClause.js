@@ -19,14 +19,12 @@ class whereCaluse{
     }
 
     categoryFilter(){
-        console.log(this.bigQ);
         const categoryId = this.bigQ.categories ?
                             {
                                 categories: {
                                     $all : this.bigQ.categories.split(',')
                                 }
                             }: {}
-        console.log({...categoryId});
         this.base = this.base.find({...categoryId})
 
         return this;

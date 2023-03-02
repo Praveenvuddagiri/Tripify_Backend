@@ -4,6 +4,8 @@ const Bigpromise = require('../middlewares/bigPromise');
 const CustomError = require('../utils/customError');
 const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary');
+const whereCaluse = require('../utils/whereClause');
+const place = require('../models/place');
 
 exports.addCategory = Bigpromise(async (req, res, next) => {
     let result;
@@ -43,6 +45,18 @@ exports.deleteCategory = Bigpromise(async (req, res, next) => {
     if (category === null) {
         return next(new CustomError("No category found", 401));
     }
+
+    //check wheather the category is in use or not
+    req.query.category = req.params.id;
+
+    const placesObj = await new whereCaluse(place.find(), req.query).filter();
+    
+    let places = await placesObj.base
+
+    if(places.length!==0){
+        return next(new CustomError("Category is used somewhere, cannot be deleted.", 401));
+    }
+
 
     const imageId = category.image.id;
 
