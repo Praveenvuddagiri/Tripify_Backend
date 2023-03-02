@@ -41,7 +41,7 @@ exports.deleteCategory = Bigpromise(async (req, res, next) => {
     const category = await Category.findById(req.params.id);
 
     if (category === null) {
-        next(new CustomError("No category found", 401));
+        return next(new CustomError("No category found", 401));
     }
 
     const imageId = category.image.id;
@@ -67,7 +67,7 @@ exports.getCategoryById = Bigpromise(async (req, res, next) => {
     const category = await Category.findById(req.params.id)
 
     if (category === null) {
-        next(new CustomError("No category found", 400));
+        return next(new CustomError("No category found", 400));
     }
     res.status(200).json({
         success: true,
@@ -84,7 +84,7 @@ exports.updateCategory = Bigpromise(async (req, res, next) => {
     let category = await Category.findById(catId)
 
     if (category === null) {
-        next(new CustomError("No category found", 400));
+        return next(new CustomError("No category found", 400));
     }
     
     if (req.files) {

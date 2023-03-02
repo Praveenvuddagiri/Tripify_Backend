@@ -155,7 +155,19 @@ const placeSchema = new mongoose.Schema({
                 required: true
             }
         }
-    ]
+    ],
+    do_s: {
+        type: [String],
+        required: true
+    },
+    dont_s: {
+        type: [String],
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    }
 })
 
 module.exports = mongoose.model('Place', placeSchema)
