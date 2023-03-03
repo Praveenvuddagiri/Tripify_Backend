@@ -214,8 +214,32 @@ exports.getOnlyReviewsForOnePlace = Bigpromise(async (req, res, next) => {
     
     let place = await Place.findById(placeId)
 
+    
+    let stars = place.reviews.filter((rev) => rev.rating === 1)
+    let oneCount = stars.length;
+
+    stars = place.reviews.filter((rev) => rev.rating === 2)
+    let twoCount = stars.length;
+
+    stars = place.reviews.filter((rev) => rev.rating === 3)
+    let threeCount = stars.length;
+
+    stars = place.reviews.filter((rev) => rev.rating === 4)
+    let fourCount = stars.length;
+
+    stars = place.reviews.filter((rev) => rev.rating === 5)
+    let fiveCount = stars.length;
+
+
     res.status(200).json({
         success: true,
-        reviews: place.reviews
+        reviews: place.reviews,
+        oneCount,
+        twoCount,
+        threeCount,
+        fourCount,
+        fiveCount,
+        numberOfReviews: place.numberOfReviews,
+        ratins_average: place.ratings
     })
 })

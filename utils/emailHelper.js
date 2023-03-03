@@ -9,7 +9,6 @@ const mailHelper = async (options) => {
             pass: process.env.SMTP_PASS
         }
     });
-    console.log(options.message);
     const message = {
         from: 'tripify.andaman@gmail.com', // sender address
         to: options.email, // list of receivers
