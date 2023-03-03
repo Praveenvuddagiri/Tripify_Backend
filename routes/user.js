@@ -14,7 +14,9 @@ const {
     adminAllUser,
     adminAllServiceproviders,
     adminGetOneUser,
-    adminDeleteOneUser
+    adminDeleteOneUser,
+    userAddPlaceToWishlist,
+    userRemovePlaceFromWishlist
 } = require('../controllers/userController');
 const { isLoggedIn, customRole } = require('../middlewares/user');
 
@@ -27,7 +29,7 @@ router.route('/password/form/:token').get(ResetPasswordFormRender);
 router.route('/password/reset/:token').post(passwordReset);
 router.route('/userdashboard').get(isLoggedIn, getLoggedInUserDetails);
 router.route('/password/update').post(isLoggedIn, changePassword);
-router.route('/userdashboard/update').post(isLoggedIn, updateUserDetails);
+router.route('/userdashboard/update').put(isLoggedIn, updateUserDetails);
 
 router.route('/admin/users').get(isLoggedIn, customRole("admin"), adminAllUser);
 router.route('/admin/serviceproviders').get(isLoggedIn, customRole("admin"), adminAllServiceproviders);
@@ -36,4 +38,8 @@ router.
     .get(isLoggedIn, customRole("admin"), adminGetOneUser)
     .delete(isLoggedIn, customRole("admin"), adminDeleteOneUser)
 
+
+//wishlist
+router.route('/wishlist/addplace').put(isLoggedIn, userAddPlaceToWishlist)
+router.route('/wishlist/removeplace').delete(isLoggedIn, userRemovePlaceFromWishlist)
 module.exports = router;

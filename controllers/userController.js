@@ -249,3 +249,38 @@ exports.adminDeleteOneUser = Bigpromise(async (req,res,next) => {
        success: true
      })
   });
+
+//wishlist
+exports.userAddPlaceToWishlist = Bigpromise(async (req,res,next) => {
+
+     const user = req.user
+
+     if(user.wishlist.includes(req.query.id)){
+          return next(new CustomError("Already added to the wishlist.", 401));
+     }
+     user.wishlist.push(req.query.id);
+     await user.save({validateBeforeSave: false});
+
+     res.status(200).json({
+       success: true,
+       message: "Added place to wishlist."
+     })
+  });
+
+exports.userRemovePlaceFromWishlist = Bigpromise(async (req,res,next) => {
+
+     const user = req.user
+
+     user.wishlist.remove(req.query.id);
+
+     await user.save({validateBeforeSave: false});
+
+     res.status(200).json({
+       success: true,
+       message: "Removed place from wishlist."
+     })
+  });
+
+
+
+
