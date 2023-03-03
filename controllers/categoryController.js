@@ -5,7 +5,7 @@ const CustomError = require('../utils/customError');
 const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
-const place = require('../models/place');
+const Place = require('../models/place');
 
 exports.addCategory = Bigpromise(async (req, res, next) => {
     let result;
@@ -49,7 +49,7 @@ exports.deleteCategory = Bigpromise(async (req, res, next) => {
     //check wheather the category is in use or not
     req.query.category = req.params.id;
 
-    const placesObj = await new whereCaluse(place.find(), req.query).filter();
+    const placesObj = await new whereCaluse(Place.find(), req.query).filter();
     
     let places = await placesObj.base
 

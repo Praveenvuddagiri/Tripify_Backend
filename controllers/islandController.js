@@ -4,6 +4,8 @@ const Bigpromise = require('../middlewares/bigPromise');
 const CustomError = require('../utils/customError');
 const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary');
+const whereCaluse = require('../utils/whereClause');
+const Place = require('../models/place');
 
 exports.addIsland = Bigpromise(async (req, res, next) => {
     let result;
@@ -47,7 +49,7 @@ exports.deleteIsland = Bigpromise(async (req, res, next) => {
     //check wheather the island is in use or not
     req.query.island = req.params.id;
 
-    const placesObj = await new whereCaluse(place.find(), req.query).filter();
+    const placesObj = await new whereCaluse(Place.find(), req.query).filter();
     
     let places = await placesObj.base
 
