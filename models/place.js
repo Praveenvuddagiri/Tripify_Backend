@@ -156,6 +156,10 @@ const placeSchema = new mongoose.Schema({
             date: {
                 type: Date,
                 default: Date.now
+            },
+            sentiment: {
+                type: String,
+                required:true
             }
         }
     ],

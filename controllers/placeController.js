@@ -5,6 +5,7 @@ const CustomError = require('../utils/customError');
 const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
 
+
 exports.addPlace = Bigpromise(async (req, res, next) => {
     // let imageArray = []
 
@@ -118,10 +119,10 @@ exports.adminUpdatePlace = Bigpromise(async (req, res, next) => {
                 secure_url: result.secure_url
             })
         }
-        
+
     }
 
-    if(imageArray.length!==0)
+    if (imageArray.length !== 0)
         req.body.images = imageArray;
 
 
@@ -140,35 +141,59 @@ exports.adminUpdatePlace = Bigpromise(async (req, res, next) => {
 
 
 exports.addReview = Bigpromise(async (req, res, next) => {
-    const {rating, comment, placeId} = req.body
+    const { rating, comment, placeId } = req.body
+
+
+    //sentiment analysis
+    let sentiment;
+    var Sentiment = require('sentiment');
+    var sentiAlgo = new Sentiment();
+    let sentimentScore = sentiAlgo.analyze(comment);
+    sentimentScore = sentimentScore.score;
+
+
+    if (sentimentScore > 0) {
+        sentiment = 'Positive';
+    } else if (sentimentScore < 0) {
+        sentiment = 'Negative';
+    } else {
+        sentiment = 'Neutral';
+    }
+
+
+
+
     const review = {
         user: req.user._id,
         name: req.user.name,
         rating: Number(rating),
-        comment
+        comment,
+        sentiment: sentiment
     }
+
 
     let place = await Place.findById(placeId)
 
     const AlreadyReview = place.reviews.find(
         (rev) => rev.user.toString() === req.user._id.toString()
     )
-    
-    if(AlreadyReview){
+
+    if (AlreadyReview) {
         place.reviews.forEach((review) => {
-            if(review.user.toString() === req.user._id.toString()){
+            if (review.user.toString() === req.user._id.toString()) {
                 review.comment = comment
                 review.rating = rating
+                review.sentiment = sentiment
             }
         })
-    }else{
+    } else {
         place.reviews.push(review)
-        place.numberOfReviews=place.reviews.length;
+        place.numberOfReviews = place.reviews.length;
     }
 
-    place.ratings  = place.reviews.reduce((acc, item) => item.rating + acc, 0) / place.reviews.length
+    place.ratings = place.reviews.reduce((acc, item) => item.rating + acc, 0) / place.reviews.length
 
-    await place.save({validateBeforeSave: false})
+    await place.save({ validateBeforeSave: false })
     res.status(200).json({
         success: true
     })
@@ -176,10 +201,10 @@ exports.addReview = Bigpromise(async (req, res, next) => {
 
 exports.deleteReview = Bigpromise(async (req, res, next) => {
     const placeId = req.query.id;
-    
+
     let place = await Place.findById(placeId)
-    
-    if(place.reviews.length === 0){
+
+    if (place.reviews.length === 0) {
         return next(new CustomError("No review found on this user.", 401));
     }
 
@@ -188,10 +213,10 @@ exports.deleteReview = Bigpromise(async (req, res, next) => {
     )
 
     const numberOfReviews = reviews.length;
-    let ratings  = 
+    let ratings =
         Number(reviews.reduce((acc, item) => item.rating + acc, 0) / reviews.length);
 
-    if(!ratings){
+    if (!ratings) {
         ratings = 0;
     }
 
@@ -199,7 +224,7 @@ exports.deleteReview = Bigpromise(async (req, res, next) => {
         reviews,
         ratings,
         numberOfReviews
-    },{
+    }, {
         new: true,
         runValidators: true,
         useFindAndModify: false
@@ -211,10 +236,10 @@ exports.deleteReview = Bigpromise(async (req, res, next) => {
 
 exports.getOnlyReviewsForOnePlace = Bigpromise(async (req, res, next) => {
     const placeId = req.query.id;
-    
+
     let place = await Place.findById(placeId)
 
-    
+
     let stars = place.reviews.filter((rev) => rev.rating === 1)
     let oneCount = stars.length;
 
@@ -230,6 +255,16 @@ exports.getOnlyReviewsForOnePlace = Bigpromise(async (req, res, next) => {
     stars = place.reviews.filter((rev) => rev.rating === 5)
     let fiveCount = stars.length;
 
+    stars = place.reviews.filter((rev) => rev.sentiment === 'Positive')
+    let positiveResponse = stars.length;
+
+    stars = place.reviews.filter((rev) => rev.sentiment === 'Negative')
+    let negativeResponse = stars.length;
+
+    stars = place.reviews.filter((rev) => rev.sentiment === 'Neutral')
+    let neutralResponse = stars.length;
+
+
 
     res.status(200).json({
         success: true,
@@ -239,7 +274,10 @@ exports.getOnlyReviewsForOnePlace = Bigpromise(async (req, res, next) => {
         threeCount,
         fourCount,
         fiveCount,
+        positiveResponse,
+        negativeResponse,
+        neutralResponse,
         numberOfReviews: place.numberOfReviews,
-        ratins_average: place.ratings
+        ratingsAverage: place.ratings
     })
 })
