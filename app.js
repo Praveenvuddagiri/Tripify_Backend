@@ -25,6 +25,9 @@ const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+//custom error middleware for easy front end
+const productionError = require("./middlewares/productionError");
+
 
 
 //morgan middleware
@@ -58,5 +61,9 @@ app.use('/api/v1', user);
 app.use('/api/v1', category);
 app.use('/api/v1', island);
 app.use('/api/v1', place);
+
+
+//to handle production error
+app.use(productionError);
 
 module.exports = app
