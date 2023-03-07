@@ -53,6 +53,36 @@ exports.login = Bigpromise(async (req, res, next) => {
      cookieToken(user, res);
 })
 
+
+exports.adminOrServiceProviderLogin = Bigpromise(async (req, res, next) => {
+     const { email, password } = req.body
+     //check for presence of email and password
+
+     if (!email || !password) {
+          return next(new CustomError("Please provide email and password.", 400));
+
+     }
+
+     //get user from DB
+
+     const user = await User.findOne({ email }).select("+password")
+     if (!user) {
+          return next(new CustomError("You are not registered to our database.", 400));
+     }
+
+     if(user.role === 'user'){
+          return next(new CustomError("You are not allowed to access the admin or service provider dashboard.", 400));
+     }
+
+     const isPasswordCorrect = await user.isValidPassword(password)
+     if (!isPasswordCorrect) {
+          return next(new CustomError("Email or password doesnot match or exist.", 400));
+     }
+
+     //send the token
+     cookieToken(user, res);
+})
+
 exports.logout = Bigpromise(async (req, res, next) => {
      res.cookie('token', null, {
           expires: new Date(Date.now()),

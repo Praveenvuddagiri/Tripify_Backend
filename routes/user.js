@@ -4,6 +4,7 @@ const router = express.Router()
 const {
     signup,
     login,
+    adminOrServiceProviderLogin,
     logout,
     forgotPassword,
     ResetPasswordFormRender,
@@ -31,6 +32,7 @@ router.route('/userdashboard').get(isLoggedIn, getLoggedInUserDetails);
 router.route('/password/update').post(isLoggedIn, changePassword);
 router.route('/userdashboard/update').put(isLoggedIn, updateUserDetails);
 
+router.route('/admin/login').post(adminOrServiceProviderLogin);
 router.route('/admin/users').get(isLoggedIn, customRole("admin"), adminAllUser);
 router.route('/admin/serviceproviders').get(isLoggedIn, customRole("admin"), adminAllServiceproviders);
 router.
