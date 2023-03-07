@@ -42,6 +42,7 @@ const user = require('./routes/user');
 const category = require('./routes/category');
 const island = require('./routes/island');
 const place = require('./routes/place');
+const service = require('./routes/service');
 
 //cookie access
 const cookieParser = require('cookie-parser');
@@ -63,6 +64,7 @@ app.use('/api/v1', user);
 app.use('/api/v1', category);
 app.use('/api/v1', island);
 app.use('/api/v1', place);
+app.use('/api/v1', service);
 
 
 //to handle production error

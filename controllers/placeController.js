@@ -285,3 +285,24 @@ exports.getOnlyReviewsForOnePlace = Bigpromise(async (req, res, next) => {
         ratingsAverage: place.ratings
     })
 })
+
+exports.getReviewOnePersonOnePlace = Bigpromise(async (req, res, next) => {
+    const placeId = req.query.id;
+
+    let place = await Place.findById(placeId)
+
+    const UserReview = place.reviews.find(
+        (rev) => rev.user.toString() === req.user._id.toString()
+    )
+
+    if(!UserReview){
+        return next(new CustomError("No review found.",400))
+    }
+
+
+    res.status(200).json({
+        success: true,
+        review: UserReview,
+        
+    })
+})

@@ -9,7 +9,8 @@ const {
     adminUpdatePlace,
     addReview,
     getOnlyReviewsForOnePlace,
-    deleteReview
+    deleteReview,
+    getReviewOnePersonOnePlace
 } = require('../controllers/placeController');
 
 const { isLoggedIn, customRole } = require('../middlewares/user');
@@ -20,6 +21,7 @@ router.route('/place/:id').get(isLoggedIn, getPlaceById);
 router.route('/review').put(isLoggedIn, addReview);
 router.route('/review').delete(isLoggedIn, deleteReview);
 router.route('/reviews').get(isLoggedIn, getOnlyReviewsForOnePlace);
+router.route('/userreview').get(isLoggedIn, getReviewOnePersonOnePlace);
 
 
 //admin
