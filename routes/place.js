@@ -10,17 +10,19 @@ const {
     addReview,
     getOnlyReviewsForOnePlace,
     deleteReview,
-    getReviewOnePersonOnePlace
+    getReviewOnePersonOnePlace,
+    getPlacesNearby
 } = require('../controllers/placeController');
 
 const { isLoggedIn, customRole } = require('../middlewares/user');
 
 //to all users
-router.route('/place/all').get(isLoggedIn, getAllPlaces);
-router.route('/place/:id').get(isLoggedIn, getPlaceById);
+router.route('/place/all').get( getAllPlaces);
+router.route('/place/:id').get( getPlaceById);
+router.route('/places/nearby').get( getPlacesNearby);
 router.route('/review').put(isLoggedIn, addReview);
 router.route('/review').delete(isLoggedIn, deleteReview);
-router.route('/reviews').get(isLoggedIn, getOnlyReviewsForOnePlace);
+router.route('/reviews').get( getOnlyReviewsForOnePlace);
 router.route('/userreview').get(isLoggedIn, getReviewOnePersonOnePlace);
 
 

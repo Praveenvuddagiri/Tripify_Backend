@@ -75,6 +75,44 @@ exports.getPlaceById = Bigpromise(async (req, res, next) => {
     })
 })
 
+exports.getPlaceById = Bigpromise(async (req, res, next) => {
+    const place = await Place.findById(req.params.id);
+
+    if (place === null) {
+        return next(new CustomError("No place found", 401));
+    }
+    res.status(200).json({
+        success: true,
+        place,
+    })
+})
+
+exports.getPlacesNearby = Bigpromise(async (req, res, next) => {
+
+    let {lat, long, maxRad} = req.body;
+
+    lat = Number(lat);
+    long = Number(long);
+    maxRad = Number(maxRad);
+
+    const places = await Place.find({
+        location: {
+          $near: {
+            $geometry: {
+              type: 'Point',
+              coordinates: [long, lat]
+            },
+            $maxDistance: maxRad // distance in meters, you can adjust this to your needs
+          }
+        }
+      })
+    
+    res.status(200).json({
+        success: true,
+        places,
+    })
+})
+
 exports.adminDeletePlaceById = Bigpromise(async (req, res, next) => {
 
     const place = await Place.findById(req.params.id);
@@ -144,6 +182,7 @@ exports.adminUpdatePlace = Bigpromise(async (req, res, next) => {
 })
 
 
+//reviews
 exports.addReview = Bigpromise(async (req, res, next) => {
     const { rating, comment, placeId } = req.body
 

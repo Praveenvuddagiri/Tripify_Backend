@@ -12,10 +12,10 @@ const { isLoggedIn, customRole } = require('../middlewares/user');
 
 
 router.route('/island/add').post(isLoggedIn, customRole('admin'), addIsland);
-router.route('/island/all').get(isLoggedIn, getAllIsland);
+router.route('/island/all').get(getAllIsland);
 router.route('/island/:id')
     .delete(isLoggedIn, customRole('admin'), deleteIsland)
-    .get(isLoggedIn, getIslandById)
+    .get(getIslandById)
     .put(isLoggedIn, customRole('admin'), updateIsland);
 
 

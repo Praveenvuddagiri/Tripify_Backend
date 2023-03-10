@@ -12,10 +12,10 @@ const { isLoggedIn, customRole } = require('../middlewares/user');
 
 
 router.route('/category/add').post(isLoggedIn, customRole('admin'), addCategory);
-router.route('/category/all').get(isLoggedIn, getAllCategory);
+router.route('/category/all').get( getAllCategory);
 router.route('/category/:id')
     .delete(isLoggedIn, customRole('admin'), deleteCategory)
-    .get(isLoggedIn, getCategoryById)
+    .get( getCategoryById)
     .put(isLoggedIn, customRole('admin'), updateCategory);
 
 

@@ -12,10 +12,10 @@ const {
 const { isLoggedIn, customRole } = require('../middlewares/user');
 
 router.route('/service/add').post(isLoggedIn, customRole('admin'), addService);
-router.route('/service/all').get(isLoggedIn, getAllServices);
+router.route('/service/all').get( getAllServices);
 router.route('/service/:id')
     .delete(isLoggedIn, customRole('admin'), deleteService)
-    .get(isLoggedIn, getServiceById)
+    .get(getServiceById)
     .put(isLoggedIn, customRole('admin'), updateService);
 
 
