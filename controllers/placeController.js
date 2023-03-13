@@ -75,17 +75,6 @@ exports.getPlaceById = Bigpromise(async (req, res, next) => {
     })
 })
 
-exports.getPlaceById = Bigpromise(async (req, res, next) => {
-    const place = await Place.findById(req.params.id);
-
-    if (place === null) {
-        return next(new CustomError("No place found", 401));
-    }
-    res.status(200).json({
-        success: true,
-        place,
-    })
-})
 
 exports.getPlacesNearby = Bigpromise(async (req, res, next) => {
 
