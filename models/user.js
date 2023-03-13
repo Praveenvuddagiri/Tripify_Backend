@@ -32,6 +32,8 @@ const userSchema = new mongoose.Schema({
     },
     forgotPasswordToken: String,
     forgotPasswordExpiry: Date,
+    otp: String,
+    otpExpiry: Date,
     createdAt:{
         type: Date,
         default: Date.now,
@@ -75,5 +77,16 @@ userSchema.methods.getForgotPasswordToken = function(){
 
    return forgotToken;
 }
+
+userSchema.methods.generateOtp = function(){
+    const code = crypto.randomInt(1000, 10000).toString().padStart(4, '0');
+
+    this.otp = code;
+
+    this.otpExpiry = Date.now() + process.env.OTP_EXPIRY * 60 * 1000;
+
+    return code;
+}
+
 
 module.exports = mongoose.model('User', userSchema);

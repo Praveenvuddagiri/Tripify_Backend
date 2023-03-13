@@ -17,12 +17,16 @@ const {
     adminGetOneUser,
     adminDeleteOneUser,
     userAddPlaceToWishlist,
-    userRemovePlaceFromWishlist
+    userRemovePlaceFromWishlist,
+    regenerateOTP,
+    verifyOtp
 } = require('../controllers/userController');
 const { isLoggedIn, customRole } = require('../middlewares/user');
 
 
 router.route('/signup').post(signup);
+router.route('/regenerate/otp').post(regenerateOTP);
+router.route('/verify/otp').post(verifyOtp);
 router.route('/login').post(login);
 router.route('/logout').get(logout);
 router.route('/forgotPassword').post(forgotPassword);

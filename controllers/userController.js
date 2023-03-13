@@ -8,25 +8,290 @@ const crypto = require('crypto');
 
 
 exports.signup = Bigpromise(async (req, res, next) => {
-     const { name, email, password, role } = req.body
+     let { name, email, password, role } = req.body
 
      if (!email || !password || !name) {
           return next(new CustomError('Name, Email and Password are required fields.', 400));
      }
 
-     if(!role){
+     let user = await User.findOne({email});
+
+     if(user){
+          await user.remove();
+     }
+
+     if (!role) {
           role = "user";
      }
 
-     const user = await User.create({
+     user = await User.create({
           name,
           email,
           password,
           role
      });
 
-     cookieToken(user, res);
+     const otp = await user.generateOtp();
+     await user.save({ validateBeforeSave: false });
+
+
+     const html = `<!DOCTYPE html>
+     <html>
+     <head>
+          <title>OTP Verification</title>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+               body {
+                    background-color: #f7f7f7;
+                    font-family: Arial, sans-serif;
+                    font-size: 16px;
+                    line-height: 1.5;
+                    color: #333;
+               }
+               .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                    border-radius: 5px;
+                    text-align: center;
+               }
+               h1 {
+                    margin-top: 0;
+                    font-size: 28px;
+                    font-weight: bold;
+                    color: #008CBA;
+               }
+               button {
+                    background-color: #008CBA;
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    border: none;
+                    cursor: pointer;
+                    text-decoration: none;
+                    margin-top: 20px;
+                    display: inline-block;
+                    transition: background-color 0.3s ease;
+               }
+               button:hover {
+                    background-color: #0077A3;
+               }
+               p {
+                    margin-top: 20px;
+                    font-size: 16px;
+                    line-height: 1.5;
+                    color: #333;
+               }
+               a {
+                    color: #008CBA;
+                    text-decoration: none;
+                    word-wrap: break-word;
+                    
+               }
+               a:hover {
+                    text-decoration: underline;
+               }
+
+          </style>
+     </head>
+     <body>
+          <div class="container">
+               <h1>Verify Your Tripify Account</h1>
+               <img style="width: 200px; height: auto;" src="https://res.cloudinary.com/diowg4rud/image/upload/v1677856928/WhatsApp_Image_2023-03-03_at_20.17.29-removebg-preview_neo00m.png"/>
+               <p>Dear Valued User,</p>
+               <p>We have received a request for creation of Tripify account. If you did not initiate this request, please ignore this email.</p>
+
+               <img style="width: 80%; height: auto;" src="https://d1oco4z2z1fhwp.cloudfront.net/templates/default/7631/password_reset.png"/> 
+               <br>
+               <p>Your OTP is: ${otp}</p>
+
+               <p>Please enter this OTP to verify your account:</p>
+               <p><strong>${otp}</strong></p>
+
+               <p>Please note that this OTP will expire in 10 minutes for security purposes. If you have any questions or concerns, please contact our support team at <a href="mailto:support@example.com">support@example.com</a>.</p>
+               
+               <p>Thank you for choosing Tripify for your travel needs.</p>
+               <p>Best regards,</p>
+               <p>The Tripify Team</p>
+          </div>
+     </body>
+     </html>
+     `;
+     const message = `Your OTP is \n\n ${otp}  `;
+     try {
+          await mailHelper({
+               email: user.email,
+               subject: "Tripify Andaman - Account Verification",
+               message,
+               html
+          })
+
+          res.status(200).json({
+               success: true,
+               message: "Email sent successfully"
+          })
+     } catch (error) {
+          user.otp = undefined;
+          user.otpExpiry = undefined;
+          await user.save({ validateBeforeSave: false });
+          return next(new CustomError(error.message, 500));
+     }
+
+     // cookieToken(user, res);
 })
+
+exports.regenerateOTP = Bigpromise(async (req, res, next) => {
+     const { email } = req.body;
+
+     if (!email) {
+          return next(new CustomError('Email is a required field.', 400));
+     }
+
+     const user = await User.findOne({ email });
+
+     if (!user) {
+          return next(new CustomError('Invalid email.', 404));
+     }
+
+     // Generate a new OTP and update the user's record
+     const otp = await user.generateOtp();
+     await user.save({ validateBeforeSave: false });
+
+     const html = `<!DOCTYPE html>
+     <html>
+     <head>
+          <title>OTP Verification</title>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+               body {
+                    background-color: #f7f7f7;
+                    font-family: Arial, sans-serif;
+                    font-size: 16px;
+                    line-height: 1.5;
+                    color: #333;
+               }
+               .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                    border-radius: 5px;
+                    text-align: center;
+               }
+               h1 {
+                    margin-top: 0;
+                    font-size: 28px;
+                    font-weight: bold;
+                    color: #008CBA;
+               }
+               button {
+                    background-color: #008CBA;
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    border: none;
+                    cursor: pointer;
+                    text-decoration: none;
+                    margin-top: 20px;
+                    display: inline-block;
+                    transition: background-color 0.3s ease;
+               }
+               button:hover {
+                    background-color: #0077A3;
+               }
+               p {
+                    margin-top: 20px;
+                    font-size: 16px;
+                    line-height: 1.5;
+                    color: #333;
+               }
+               a {
+                    color: #008CBA;
+                    text-decoration: none;
+                    word-wrap: break-word;
+                    
+               }
+               a:hover {
+                    text-decoration: underline;
+               }
+
+          </style>
+     </head>
+     <body>
+          <div class="container">
+               <h1>Verify Your Tripify Account</h1>
+               <img style="width: 200px; height: auto;" src="https://res.cloudinary.com/diowg4rud/image/upload/v1677856928/WhatsApp_Image_2023-03-03_at_20.17.29-removebg-preview_neo00m.png"/>
+               <p>Dear Valued User,</p>
+               <p>We have received a request for creation of Tripify account. If you did not initiate this request, please ignore this email.</p>
+
+               <img style="width: 80%; height: auto;" src="https://d1oco4z2z1fhwp.cloudfront.net/templates/default/7631/password_reset.png"/> 
+               <br>
+               <p>Your OTP is: ${otp}</p>
+
+               <p>Please enter this OTP to verify your account:</p>
+               <p><strong>${otp}</strong></p>
+
+               <p>Please note that this OTP will expire in 10 minutes for security purposes. If you have any questions or concerns, please contact our support team at <a href="mailto:support@example.com">support@example.com</a>.</p>
+               
+               <p>Thank you for choosing Tripify for your travel needs.</p>
+               <p>Best regards,</p>
+               <p>The Tripify Team</p>
+          </div>
+     </body>
+     </html>
+     `;
+     const message = `Your OTP is \n\n ${otp}  `;
+     try {
+          await mailHelper({
+               email: user.email,
+               subject: "Tripify Andaman - Account Verification",
+               message,
+               html
+          })
+     } catch (error) {
+          user.otp = undefined;
+          user.otpExpiry = undefined;
+          await user.save({ validateBeforeSave: false });
+          return next(new CustomError(error.message, 500));
+     }
+    
+     res.status(200).json({
+          success: true,
+          message: 'New OTP has been sent to your email.',
+     });
+});
+
+
+exports.verifyOtp = Bigpromise(async (req, res, next) => {
+     const {otp} = req.body;
+
+     console.log(otp);
+     const user = await User.findOne({
+          otp: otp,
+          otpExpiry: { $gt: Date.now() }
+     })
+
+
+     if (!user) {
+          return next(new CustomError('Invalid OTP.', 404));
+     }
+
+     user.otp = undefined;
+     user.otpExpiry = undefined;
+
+     await user.save({ validateBeforeSave: false });
+
+     cookieToken(user, res);
+});
 
 exports.login = Bigpromise(async (req, res, next) => {
      const { email, password } = req.body
@@ -42,6 +307,10 @@ exports.login = Bigpromise(async (req, res, next) => {
      const user = await User.findOne({ email }).select("+password")
      if (!user) {
           return next(new CustomError("You are not registered to our database.", 400));
+     }
+
+     if(user.otp || user.otpExpiry){
+          return next(new CustomError("Your account is not verified.", 400));
      }
 
      const isPasswordCorrect = await user.isValidPassword(password)
@@ -70,7 +339,7 @@ exports.adminOrServiceProviderLogin = Bigpromise(async (req, res, next) => {
           return next(new CustomError("You are not registered to our database.", 400));
      }
 
-     if(user.role === 'user'){
+     if (user.role === 'user') {
           return next(new CustomError("You are not allowed to access the admin or service provider dashboard.", 400));
      }
 
