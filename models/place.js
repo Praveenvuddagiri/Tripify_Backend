@@ -77,6 +77,46 @@ const placeSchema = new mongoose.Schema({
         ref: 'Category',
         required: true
     },
+    howToReach:{
+        type: String,
+    },
+    bestTimeToVisit:{
+        startMonth: {
+            type: String,
+            enum: [
+                "January",
+                "February", 
+                "March", 
+                "April", 
+                "May", 
+                "June", 
+                "July", 
+                "August", 
+                "September", 
+                "October", 
+                "November", 
+                "December"
+            ],
+
+        },
+        endMonth: {
+            type: String,
+            enum: [
+                "January",
+                "February", 
+                "March", 
+                "April", 
+                "May", 
+                "June", 
+                "July", 
+                "August", 
+                "September", 
+                "October", 
+                "November", 
+                "December"
+            ],
+        }
+    },
     images: [
         {
             id: {

@@ -8,13 +8,29 @@ const whereCaluse = require('../utils/whereClause');
 exports.addTourOperator = Bigpromise(async (req, res, next) => {
     let image, govtDoc, tariff;
 
-    if (!req.files) {
+    console.log(req.body);
+
+    if (!req.files || !req.files.image || ! req.files.governmentAuthorizedLicense || !req.files.tariffDocument) {
         return next(new CustomError("Documents are required", 401));
     }
 
     if (req.files) {
-        let file = req.files.image;
-        let result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
+        let file1 = req.files.image;
+
+        let file2 = req.files.governmentAuthorizedLicense;
+
+        if (file2.mimetype !== 'application/pdf') {
+            return next(new CustomError("For government authorized license PDF format is expected.",401))
+        }
+
+        let file3 = req.files.tariffDocument;
+
+        if (file3.mimetype !== 'application/pdf') {
+            return next(new CustomError("For Tariff PDF format is expected.",401))
+        }
+
+
+        let result = await cloudinary.v2.uploader.upload(file1.tempFilePath, {
             folder: "tour_operators/company_logo",
         });
         image = ({
@@ -22,8 +38,8 @@ exports.addTourOperator = Bigpromise(async (req, res, next) => {
             secure_url: result.secure_url
         })
 
-        file = req.files.governmentAuthorizedLicense;
-        result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
+        
+        result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
             folder: "tour_operators/licenses",
         });
         govtDoc = ({
@@ -31,8 +47,8 @@ exports.addTourOperator = Bigpromise(async (req, res, next) => {
             secure_url: result.secure_url
         })
 
-        file = req.files.tariffDocument;
-        result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
+        
+        result = await cloudinary.v2.uploader.upload(file3.tempFilePath, {
             folder: "tour_operators/tariffs",
         });
         tariff = ({
@@ -45,12 +61,16 @@ exports.addTourOperator = Bigpromise(async (req, res, next) => {
     req.body.image = image;
     req.body.governmentAuthorizedLicense = govtDoc;
     req.body.tariffDocument = tariff;
+
+    //temporary
     res.status(200).json({
         success: true,
         image,
-        govtDoc,
-        tariff
+        governmentAuthorizedLicense: govtDoc,
+        tariffDocument: tariff
     })
+
+    req.body.serviceProvider = req.user._id;
 
     const tourOperator = await TourOperator.create(req.body);
 
@@ -64,9 +84,30 @@ exports.getAllTourOperators = Bigpromise(async (req, res, next) => {
     const resultPerPage = 6;
     const totalTourOperatorCount = await TourOperator.countDocuments()
 
-
-
     const Obj = await new whereCaluse(TourOperator.find(), req.query).search();
+
+    let tourOperators = await Obj.base
+    const filteredNumber = tourOperators.length;
+    Obj.pager(resultPerPage);
+
+    tourOperators = await Obj.base.clone();
+
+
+    res.status(200).json({
+        success: true,
+        places,
+        filteredNumber,
+        totalTourOperatorCount
+    })
+})
+
+exports.getTourOperatorsPerServiceProvider = Bigpromise(async (req, res, next) => {
+    const resultPerPage = 6;
+    const totalTourOperatorCount = await TourOperator.countDocuments()
+
+    req.query.serviceProvider = req.user;
+
+    const Obj = await new whereCaluse(TourOperator.find(), req.query).search().filter();
 
     let tourOperators = await Obj.base
     const filteredNumber = tourOperators.length;
@@ -97,10 +138,20 @@ exports.getTourOperatorById = Bigpromise(async (req, res, next) => {
 
 exports.deleteTourOperatorById = Bigpromise(async (req, res, next) => {
 
+
+    
     const tourOperator = await TourOperator.findById(req.params.id);
     if (tourOperator === null) {
         return next(new CustomError("No Tour operator found", 401));
     }
+
+    if(req.user.role !== "admin"){
+        if(tourOperator.serviceProvider !== req.user._id){
+            return next(new CustomError("You are not allowed to delete this resource.", 401));
+        }
+    }
+
+
 
 
     const imageId = tourOperator.image.id;
@@ -123,6 +174,12 @@ exports.updateTourOperator = Bigpromise(async (req, res, next) => {
 
     if (tourOperator === null) {
         return next(new CustomError("No Tour Operator found", 400));
+    }
+
+    if(req.user.role !== "admin"){
+        if(tourOperator.serviceProvider !== req.user._id){
+            return next(new CustomError("You are not allowed to update this resource.", 401));
+        }
     }
 
     if (req.files) {
@@ -190,7 +247,6 @@ exports.updateTourOperator = Bigpromise(async (req, res, next) => {
         tourOperator
     });
 })
-
 
 exports.approveTourOperator = Bigpromise(async (req, res, next) => {
     let tourOperator = await TourOperator.findById(req.params.id)
