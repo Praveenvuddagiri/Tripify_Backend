@@ -6,69 +6,69 @@ const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
 
 exports.addTourOperator = Bigpromise(async (req, res, next) => {
-    let image, govtDoc, tariff;
+    // let image, govtDoc, tariff;
 
-    console.log(req.body);
+    // console.log(req.body);
 
-    if (!req.files || !req.files.image || ! req.files.governmentAuthorizedLicense || !req.files.tariffDocument) {
-        return next(new CustomError("Documents are required", 401));
-    }
+    // if (!req.files || !req.files.image || ! req.files.governmentAuthorizedLicense || !req.files.tariffDocument) {
+    //     return next(new CustomError("Documents are required", 401));
+    // }
 
-    if (req.files) {
-        let file1 = req.files.image;
+    // if (req.files) {
+    //     let file1 = req.files.image;
 
-        let file2 = req.files.governmentAuthorizedLicense;
+    //     let file2 = req.files.governmentAuthorizedLicense;
 
-        if (file2.mimetype !== 'application/pdf') {
-            return next(new CustomError("For government authorized license PDF format is expected.",401))
-        }
+    //     if (file2.mimetype !== 'application/pdf') {
+    //         return next(new CustomError("For government authorized license PDF format is expected.",401))
+    //     }
 
-        let file3 = req.files.tariffDocument;
+    //     let file3 = req.files.tariffDocument;
 
-        if (file3.mimetype !== 'application/pdf') {
-            return next(new CustomError("For Tariff PDF format is expected.",401))
-        }
+    //     if (file3.mimetype !== 'application/pdf') {
+    //         return next(new CustomError("For Tariff PDF format is expected.",401))
+    //     }
 
 
-        let result = await cloudinary.v2.uploader.upload(file1.tempFilePath, {
-            folder: "tour_operators/company_logo",
-        });
-        image = ({
-            id: result.public_id,
-            secure_url: result.secure_url
-        })
-
-        
-        result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
-            folder: "tour_operators/licenses",
-        });
-        govtDoc = ({
-            id: result.public_id,
-            secure_url: result.secure_url
-        })
+    //     let result = await cloudinary.v2.uploader.upload(file1.tempFilePath, {
+    //         folder: "tour_operators/company_logo",
+    //     });
+    //     image = ({
+    //         id: result.public_id,
+    //         secure_url: result.secure_url
+    //     })
 
         
-        result = await cloudinary.v2.uploader.upload(file3.tempFilePath, {
-            folder: "tour_operators/tariffs",
-        });
-        tariff = ({
-            id: result.public_id,
-            secure_url: result.secure_url
-        })
+    //     result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
+    //         folder: "tour_operators/licenses",
+    //     });
+    //     govtDoc = ({
+    //         id: result.public_id,
+    //         secure_url: result.secure_url
+    //     })
 
-    }
-    console.log({ image, govtDoc, tariff });
-    req.body.image = image;
-    req.body.governmentAuthorizedLicense = govtDoc;
-    req.body.tariffDocument = tariff;
+        
+    //     result = await cloudinary.v2.uploader.upload(file3.tempFilePath, {
+    //         folder: "tour_operators/tariffs",
+    //     });
+    //     tariff = ({
+    //         id: result.public_id,
+    //         secure_url: result.secure_url
+    //     })
 
-    //temporary
-    res.status(200).json({
-        success: true,
-        image,
-        governmentAuthorizedLicense: govtDoc,
-        tariffDocument: tariff
-    })
+    // }
+    // console.log({ image, govtDoc, tariff });
+    // req.body.image = image;
+    // req.body.governmentAuthorizedLicense = govtDoc;
+    // req.body.tariffDocument = tariff;
+
+    // //temporary
+    // res.status(200).json({
+    //     success: true,
+    //     image,
+    //     governmentAuthorizedLicense: govtDoc,
+    //     tariffDocument: tariff
+    // })
 
     req.body.serviceProvider = req.user._id;
 
@@ -84,28 +84,11 @@ exports.getAllTourOperators = Bigpromise(async (req, res, next) => {
     const resultPerPage = 6;
     const totalTourOperatorCount = await TourOperator.countDocuments()
 
-    const Obj = await new whereCaluse(TourOperator.find(), req.query).search();
+    console.log(totalTourOperatorCount);
 
-    let tourOperators = await Obj.base
-    const filteredNumber = tourOperators.length;
-    Obj.pager(resultPerPage);
+    req.query.isApproved = true;
 
-    tourOperators = await Obj.base.clone();
-
-
-    res.status(200).json({
-        success: true,
-        places,
-        filteredNumber,
-        totalTourOperatorCount
-    })
-})
-
-exports.getTourOperatorsPerServiceProvider = Bigpromise(async (req, res, next) => {
-    const resultPerPage = 6;
-    const totalTourOperatorCount = await TourOperator.countDocuments()
-
-    req.query.serviceProvider = req.user;
+    console.log(req.query);
 
     const Obj = await new whereCaluse(TourOperator.find(), req.query).search().filter();
 
@@ -118,7 +101,33 @@ exports.getTourOperatorsPerServiceProvider = Bigpromise(async (req, res, next) =
 
     res.status(200).json({
         success: true,
-        places,
+        tourOperators,
+        filteredNumber,
+        totalTourOperatorCount
+    })
+})
+
+exports.getTourOperatorsPerServiceProvider = Bigpromise(async (req, res, next) => {
+
+    const resultPerPage = 6;
+    const totalTourOperatorCount = await TourOperator.countDocuments()
+
+    req.query.serviceProvider = req.user._id;
+
+    console.log(req.query);
+
+    const Obj = await new whereCaluse(TourOperator.find(), req.query).search().filter();
+
+    let tourOperators = await Obj.base
+    const filteredNumber = tourOperators.length;
+    Obj.pager(resultPerPage);
+
+    tourOperators = await Obj.base.clone();
+
+
+    res.status(200).json({
+        success: true,
+        tourOperators,
         filteredNumber,
         totalTourOperatorCount
     })
@@ -146,7 +155,8 @@ exports.deleteTourOperatorById = Bigpromise(async (req, res, next) => {
     }
 
     if(req.user.role !== "admin"){
-        if(tourOperator.serviceProvider !== req.user._id){
+
+        if(tourOperator.serviceProvider.toString() !== req.user._id.toString()){
             return next(new CustomError("You are not allowed to delete this resource.", 401));
         }
     }
@@ -154,7 +164,7 @@ exports.deleteTourOperatorById = Bigpromise(async (req, res, next) => {
 
 
 
-    const imageId = tourOperator.image.id;
+    let imageId = tourOperator.image.id;
     await cloudinary.v2.uploader.destroy(imageId);
     imageId = tourOperator.governmentAuthorizedLicense.id;
     await cloudinary.v2.uploader.destroy(imageId);
@@ -165,7 +175,8 @@ exports.deleteTourOperatorById = Bigpromise(async (req, res, next) => {
     await tourOperator.remove()
 
     res.status(200).json({
-        success: true
+        success: true,
+        message: "Deleted the tour operator successfully."
     })
 })
 
@@ -177,7 +188,7 @@ exports.updateTourOperator = Bigpromise(async (req, res, next) => {
     }
 
     if(req.user.role !== "admin"){
-        if(tourOperator.serviceProvider !== req.user._id){
+        if(tourOperator.serviceProvider.toString() !== req.user._id.toString()){
             return next(new CustomError("You are not allowed to update this resource.", 401));
         }
     }
@@ -261,7 +272,24 @@ exports.approveTourOperator = Bigpromise(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        tourOperator
+        message: "Approved the tour operator."
+    })
+})
+
+exports.unapproveTourOperator = Bigpromise(async (req, res, next) => {
+    let tourOperator = await TourOperator.findById(req.params.id)
+
+    if (tourOperator === null) {
+        return next(new CustomError("No Tour Operator found", 400));
+    }
+
+    tourOperator.isApproved = false;
+
+    tourOperator.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Unapproved the tour operator."
     })
 })
 
@@ -276,3 +304,11 @@ exports.getUnapprovedTourOperators = Bigpromise(async (req, res, next) => {
 })
 
 
+exports.getAllTourOperatorsForAdmin = Bigpromise(async (req, res, next) => {
+    let tourOperators = await TourOperator.find()
+
+    res.status(200).json({
+        success: true,
+        tourOperators
+    })
+})

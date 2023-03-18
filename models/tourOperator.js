@@ -67,4 +67,4 @@ const tourOperatorsSchema = new mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('TourOperators', tourOperatorsSchema);
+module.exports = mongoose.model('TourOperator', tourOperatorsSchema);
