@@ -34,6 +34,9 @@ const tourOperatorsSchema = new mongoose.Schema({
             validate: [validator.isEmail, "Please enter a valid email."],
             unique: true,
             required: true
+        },
+        website: {
+            type: String,
         }
     },
     tariffDocument: {
