@@ -70,12 +70,48 @@ const hotelSchema = new mongoose.Schema({
     },
     rooms: [
         {
-            roomType: String,
+            roomType: {
+                type: String,
+                enum: {
+                    values: [
+                    "Single Room", 
+                    "Twin Room", 
+                    "Triple Room", 
+                    "Family Room", 
+                    "Suite",
+                    "Deluxe Room",
+                    "Cottage",
+                    "Dormitory Room",
+                    "Executive Suite"
+                ],
+                    message: "Selected room type not available.",
+                },
+                
+            },
             description: String,
             price: Number,
             maxOccupancy: Number,
             beds: {
-              bedType: String,
+              bedType: {
+                type: String,
+                enum: {
+                    values: [
+                        "Single",
+                        "Twin",
+                        "Double",
+                        "Queen",
+                        "King",
+                        "Super King",
+                        "Bunk Bed",
+                        "Sofa Bed",
+                        "Futon",
+                        "Trundle Bed",
+                        "Murphy Bed",
+                        "Day Bed"
+                ],
+                    message: "Selected bed type not available.",
+                },
+              },
               quantity: Number
             },
             amenities: [String]
