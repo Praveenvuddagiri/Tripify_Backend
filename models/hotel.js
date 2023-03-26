@@ -78,7 +78,7 @@ const hotelSchema = new mongoose.Schema({
                     "Twin Room", 
                     "Triple Room", 
                     "Family Room", 
-                    "Suite",
+                    "Suite Room",
                     "Deluxe Room",
                     "Cottage",
                     "Dormitory Room",

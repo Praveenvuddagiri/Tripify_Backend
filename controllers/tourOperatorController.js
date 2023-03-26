@@ -84,11 +84,10 @@ exports.getAllTourOperators = Bigpromise(async (req, res, next) => {
     const resultPerPage = 6;
     const totalTourOperatorCount = await TourOperator.countDocuments()
 
-    console.log(totalTourOperatorCount);
+    // console.log(totalTourOperatorCount);
 
     req.query.isApproved = true;
 
-    console.log(req.query);
 
     const Obj = await new whereCaluse(TourOperator.find(), req.query).search().filter();
 
@@ -97,6 +96,12 @@ exports.getAllTourOperators = Bigpromise(async (req, res, next) => {
     Obj.pager(resultPerPage);
 
     tourOperators = await Obj.base.clone();
+
+
+    tourOperators = tourOperators.map((to) =>{
+        to.governmentAuthorizedLicense = undefined;
+        return to;
+    })
 
 
     res.status(200).json({
