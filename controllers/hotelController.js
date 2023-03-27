@@ -319,3 +319,5 @@ exports.getAllHotelsForAdmin = Bigpromise(async (req, res, next) => {
         hotels
     })
 })
+
+//review module

@@ -41,7 +41,7 @@ exports.addPlace = Bigpromise(async (req, res, next) => {
 })
 
 exports.getAllPlaces = Bigpromise(async (req, res, next) => {
-    const resultPerPage = 6;
+    const resultPerPage = 4;
     const totalPlaceCount = await Place.countDocuments()
 
 
@@ -49,10 +49,12 @@ exports.getAllPlaces = Bigpromise(async (req, res, next) => {
     const placesObj = await new whereCaluse(Place.find(), req.query).search().categoryFilter().filter();
 
     let places = await placesObj.base
-    const filteredPlaceNumber = places.length;
     placesObj.pager(resultPerPage);
+    
 
     places = await placesObj.base.clone();
+
+    const filteredPlaceNumber = places.length;
 
 
     res.status(200).json({
