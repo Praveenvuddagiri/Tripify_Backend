@@ -84,6 +84,7 @@ exports.getAllHotels = Bigpromise(async (req, res, next) => {
     Obj.pager(resultPerPage);
 
     hotels = await Obj.base.clone();
+    
 
     hotels = hotels.map((hot) => {
         hot.governmentAuthorizedLicense = undefined;
@@ -140,18 +141,19 @@ exports.getHotelsPerServiceProvider = Bigpromise(async (req, res, next) => {
     const Obj = await new whereCaluse(Hotel.find(), req.query).search().filter();
 
     let hotels = await Obj.base
-    const filteredNumber = hotels.length;
+    
     Obj.pager(resultPerPage);
 
     hotels = await Obj.base.clone();
 
-
+    const filteredNumber = hotels.length;
     res.status(200).json({
         success: true,
         hotels,
         filteredNumber,
         totalHotelCount
     })
+
 })
 
 exports.getHotelById = Bigpromise(async (req, res, next) => {
