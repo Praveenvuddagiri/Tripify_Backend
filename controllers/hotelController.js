@@ -6,60 +6,59 @@ const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
 
 exports.addHotel = Bigpromise(async (req, res, next) => {
-    let govtDoc;
-    let images = [];
+    // let govtDoc;
+    // let images = [];
 
-    console.log(req.body);
+    // console.log(req.body);
 
-    if (!req.files || !req.files.images || !req.files.governmentAuthorizedLicense) {
-        return next(new CustomError("Documents are required", 401));
-    }
+    // if (!req.files || !req.files.images || !req.files.governmentAuthorizedLicense) {
+    //     return next(new CustomError("Documents are required", 401));
+    // }
 
-    if (req.files) {
-        let file1 = req.files.images;
+    // if (req.files) {
+    //     let file1 = req.files.images;
 
-        let file2 = req.files.governmentAuthorizedLicense;
+    //     let file2 = req.files.governmentAuthorizedLicense;
 
-        if (file2.mimetype !== 'application/pdf') {
-            return next(new CustomError("For government authorized license PDF format is expected.", 401))
-        }
-
-
-        for (let index = 0; index < file1.length; index++) {
-            const img = file1[index];
-
-            let result = await cloudinary.v2.uploader.upload(img.tempFilePath, {
-                folder: "hotels/images",
-            });
-
-            images.push({
-                id: result.public_id,
-                secure_url: result.secure_url
-            })
-
-        }
+    //     if (file2.mimetype !== 'application/pdf') {
+    //         return next(new CustomError("For government authorized license PDF format is expected.", 401))
+    //     }
 
 
-        let result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
-            folder: "hotels/licenses",
-        });
-        govtDoc = ({
-            id: result.public_id,
-            secure_url: result.secure_url
-        })
+    //     for (let index = 0; index < file1.length; index++) {
+    //         const img = file1[index];
 
-    }
-    console.log({ images, govtDoc });
-    req.body.images = images;
-    req.body.governmentAuthorizedLicense = govtDoc;
-    req.body.tariffDocument = tariff;
+    //         let result = await cloudinary.v2.uploader.upload(img.tempFilePath, {
+    //             folder: "hotels/images",
+    //         });
 
-    //temporary
-    res.status(200).json({
-        success: true,
-        images,
-        governmentAuthorizedLicense: govtDoc
-    })
+    //         images.push({
+    //             id: result.public_id,
+    //             secure_url: result.secure_url
+    //         })
+
+    //     }
+
+
+    //     let result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
+    //         folder: "hotels/licenses",
+    //     });
+    //     govtDoc = ({
+    //         id: result.public_id,
+    //         secure_url: result.secure_url
+    //     })
+
+    // }
+    // console.log({ images, govtDoc });
+    // req.body.images = images;
+    // req.body.governmentAuthorizedLicense = govtDoc;
+
+    // //temporary
+    // res.status(200).json({
+    //     success: true,
+    //     images,
+    //     governmentAuthorizedLicense: govtDoc
+    // })
 
     req.body.serviceProvider = req.user._id;
 
@@ -107,7 +106,7 @@ exports.getNearbyHotels = Bigpromise(async (req, res, next) => {
     long = Number(long);
     maxRad = Number(maxRad);
 
-    const hotels = await Hotel.find({
+    let hotels = await Hotel.find({
         location: {
             $near: {
                 $geometry: {
@@ -122,6 +121,10 @@ exports.getNearbyHotels = Bigpromise(async (req, res, next) => {
     hotels = hotels.map((hot) => { 
         hot.governmentAuthorizedLicense = undefined;
         return hot;
+    })
+
+    hotels = hotels.filter((hot) => {
+        hot.isApproved === true
     })
 
     res.status(200).json({
@@ -207,10 +210,11 @@ exports.updateHotel = Bigpromise(async (req, res, next) => {
     }
 
     if (req.user.role !== "admin") {
-        if (tourOperator.serviceProvider.toString() !== req.user._id.toString()) {
+        if (hotel.serviceProvider.toString() !== req.user._id.toString()) {
             return next(new CustomError("You are not allowed to update this resource.", 401));
         }
     }
+    let images =[]
 
     if (req.files) {
 
@@ -234,6 +238,8 @@ exports.updateHotel = Bigpromise(async (req, res, next) => {
                 })
 
             }
+
+            req.body.images = images;
 
         }
 

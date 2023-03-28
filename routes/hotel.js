@@ -34,8 +34,8 @@ router.route('/serviceprovider/hotels')
     .get(isLoggedIn, customRole('serviceprovider'), getHotelsPerServiceProvider)
 
 //for tourists
-router.route('/hotel/all').get(getAllHotels);
-router.route('/hotel/nearby').get(getNearbyHotels);
+router.route('/hotels/all').get(getAllHotels);
+router.route('/hotels/nearby').get(getNearbyHotels);
 
 //reviews
 router.route('/hotel/review').put(isLoggedIn, addReview);
