@@ -12,7 +12,11 @@ const {
     approveHotel,
     unapproveHotel,
     getUnapprovedHotels,
-    getNearbyHotels
+    getNearbyHotels,
+    addReview,
+    deleteReview,
+    getOnlyReviewsForOneHotel,
+    getReviewOnePersonOneHotel
 } = require('../controllers/hotelController');
 
 const { isLoggedIn, customRole } = require('../middlewares/user');
@@ -32,6 +36,12 @@ router.route('/serviceprovider/hotels')
 //for tourists
 router.route('/hotel/all').get(getAllHotels);
 router.route('/hotel/nearby').get(getNearbyHotels);
+
+//reviews
+router.route('/hotel/review').put(isLoggedIn, addReview);
+router.route('/hotel/review').delete(isLoggedIn, deleteReview);
+router.route('/hotel/reviews').get( getOnlyReviewsForOneHotel);
+router.route('/hotel/userreview').get(isLoggedIn, getReviewOnePersonOneHotel);
 
 // only for admin
 router.route('/admin/hotel/all').get(isLoggedIn, customRole('admin'), getAllHotelsForAdmin);

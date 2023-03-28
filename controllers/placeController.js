@@ -219,7 +219,7 @@ exports.addReview = Bigpromise(async (req, res, next) => {
                 review.comment = comment
                 review.rating = rating
                 review.sentiment = sentiment
-                review.date = Date.now
+                review.date = Date.now()
             }
         })
     } else {

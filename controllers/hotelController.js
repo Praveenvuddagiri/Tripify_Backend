@@ -323,3 +323,168 @@ exports.getAllHotelsForAdmin = Bigpromise(async (req, res, next) => {
 })
 
 //review module
+
+
+exports.addReview = Bigpromise(async (req, res, next) => {
+    const { rating, comment, hotelId } = req.body
+
+
+    //sentiment analysis
+    let sentiment;
+    var Sentiment = require('sentiment');
+    var sentiAlgo = new Sentiment();
+    let sentimentScore = sentiAlgo.analyze(comment);
+    sentimentScore = sentimentScore.score;
+
+
+    if (sentimentScore > 0) {
+        sentiment = 'Positive';
+    } else if (sentimentScore < 0) {
+        sentiment = 'Negative';
+    } else {
+        sentiment = 'Neutral';
+    }
+
+
+
+
+    const review = {
+        user: req.user._id,
+        name: req.user.name,
+        rating: Number(rating),
+        comment,
+        sentiment: sentiment
+    }
+
+
+    let hotel = await Hotel.findById(hotelId)
+
+    const AlreadyReview = hotel.reviews.find(
+        (rev) => rev.user.toString() === req.user._id.toString()
+    )
+
+    if (AlreadyReview) {
+        hotel.reviews.forEach((review) => {
+            if (review.user.toString() === req.user._id.toString()) {
+                review.comment = comment
+                review.rating = rating
+                review.sentiment = sentiment
+                review.date = Date.now()
+            }
+        })
+    } else {
+        hotel.reviews.push(review)
+        hotel.numberOfReviews = hotel.reviews.length;
+    }
+    
+    hotel.ratings = hotel.reviews.reduce((acc, item) => item.rating + acc, 0) / hotel.reviews.length
+
+    await hotel.save({ validateBeforeSave: false })
+    res.status(200).json({
+        success: true
+    })
+})
+
+exports.deleteReview = Bigpromise(async (req, res, next) => {
+    const hotelId = req.query.id;
+
+    let hotel = await Hotel.findById(hotelId)
+
+    if (hotel.reviews.length === 0) {
+        return next(new CustomError("No review found on this user.", 401));
+    }
+
+    const reviews = hotel.reviews.filter(
+        (rev) => rev.user.toString() !== req.user._id.toString()
+    )
+
+    const numberOfReviews = reviews.length;
+    let ratings =
+        Number(reviews.reduce((acc, item) => item.rating + acc, 0) / reviews.length);
+
+    if (!ratings) {
+        ratings = 0;
+    }
+
+    await Hotel.findByIdAndUpdate(placeId, {
+        reviews,
+        ratings,
+        numberOfReviews
+    }, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    })
+    res.status(200).json({
+        success: true
+    })
+})
+
+exports.getOnlyReviewsForOneHotel = Bigpromise(async (req, res, next) => {
+    const hotelId = req.query.id;
+
+    let hotel = await Place.findById(hotelId)
+
+
+    let stars = hotel.reviews.filter((rev) => rev.rating === 1)
+    let oneCount = stars.length;
+
+    stars = hotel.reviews.filter((rev) => rev.rating === 2)
+    let twoCount = stars.length;
+
+    stars = hotel.reviews.filter((rev) => rev.rating === 3)
+    let threeCount = stars.length;
+
+    stars = hotel.reviews.filter((rev) => rev.rating === 4)
+    let fourCount = stars.length;
+
+    stars = hotel.reviews.filter((rev) => rev.rating === 5)
+    let fiveCount = stars.length;
+
+    stars = hotel.reviews.filter((rev) => rev.sentiment === 'Positive')
+    let positiveResponse = stars.length;
+
+    stars = hotel.reviews.filter((rev) => rev.sentiment === 'Negative')
+    let negativeResponse = stars.length;
+
+    stars = hotel.reviews.filter((rev) => rev.sentiment === 'Neutral')
+    let neutralResponse = stars.length;
+
+
+
+    res.status(200).json({
+        success: true,
+        reviews: hotel.reviews,
+        oneCount,
+        twoCount,
+        threeCount,
+        fourCount,
+        fiveCount,
+        positiveResponse,
+        negativeResponse,
+        neutralResponse,
+        numberOfReviews: hotel.numberOfReviews,
+        ratingsAverage: hotel.ratings
+    })
+})
+
+exports.getReviewOnePersonOneHotel = Bigpromise(async (req, res, next) => {
+    const hotelId = req.query.id;
+
+    let hotel = await Hotel.findById(hotelId)
+
+    const UserReview = hotel.reviews.find(
+        (rev) => rev.user.toString() === req.user._id.toString()
+    )
+
+    if(!UserReview){
+        return next(new CustomError("No review found.",400))
+    }
+
+
+    res.status(200).json({
+        success: true,
+        review: UserReview,
+        
+    })
+})
