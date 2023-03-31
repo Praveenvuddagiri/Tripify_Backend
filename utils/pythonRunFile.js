@@ -2,6 +2,31 @@ const { spawn } = require('child_process');
 
 async function runPythonFunction(filePath, functionName, parameter) {
   try {
+
+
+    // Check if pip is installed
+    const checkProcess = spawn('pip', ['--version']);
+    const pipInstalled = await new Promise((resolve) => {
+      checkProcess.on('close', (code) => {
+        resolve(code === 0);
+      });
+    });
+
+    // Install pip if it is not installed
+    if (!pipInstalled) {
+      console.log('Installing pip...');
+      const installProcess = spawn('python', ['get-pip.py']);
+      await new Promise((resolve, reject) => {
+        installProcess.on('close', (code) => {
+          if (code !== 0) {
+            reject(`Pip install exited with code ${code}`);
+          } else {
+            resolve();
+          }
+        });
+      });
+    }
+    
     // Install required libraries
     const installProcess = spawn('pip', ['install', '-r', 'chatbot/requirements.txt']);
 
