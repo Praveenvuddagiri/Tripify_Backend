@@ -1,6 +1,4 @@
 const { spawn } = require('child_process');
-const { PythonShell } = require('python-shell');
-
 async function runPythonFunction(filePath, functionName, parameter) {
   try {
 
