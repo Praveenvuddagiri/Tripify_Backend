@@ -1,4 +1,5 @@
 const { spawn } = require('child_process');
+const { PythonShell } = require('python-shell');
 
 async function runPythonFunction(filePath, functionName, parameter) {
   try {
@@ -14,33 +15,33 @@ async function runPythonFunction(filePath, functionName, parameter) {
 
     // Install pip if it is not installed
     // if (!pipInstalled) {
-      console.log('Installing pip...');
-      let installProcess = spawn('yum', ['install', '-y', 'python3-pip']);
+    // console.log('Installing pip...');
+    // let installProcess = spawn('yum', ['install', '-y', 'python3-pip']);
 
-      await new Promise((resolve, reject) => {
-        installProcess.on('close', (code) => {
-          if (code !== 0) {
-            reject(`Pip install exited with code ${code}`);
-          } else {
-            resolve();
-          }
-        });
-      });
+    // await new Promise((resolve, reject) => {
+    //   installProcess.on('close', (code) => {
+    //     if (code !== 0) {
+    //       reject(`Pip install exited with code ${code}`);
+    //     } else {
+    //       resolve();
+    //     }
+    //   });
+    // });
     // }
 
     // Install required libraries
-    installProcess = spawn('pip', ['install', '-r', 'chatbot/requirements.txt']);
+    // installProcess = spawn('pip', ['install', '-r', 'chatbot/requirements.txt']);
 
-    await new Promise((resolve, reject) => {
-      installProcess.on('close', (code) => {
-        if (code !== 0) {
-          reject(`Pip install exited with code ${code}`);
-        } else {
-          resolve();
-        }
-      });
-    });
-  
+    // await new Promise((resolve, reject) => {
+    //   installProcess.on('close', (code) => {
+    //     if (code !== 0) {
+    //       reject(`Pip install exited with code ${code}`);
+    //     } else {
+    //       resolve();
+    //     }
+    //   });
+    // });
+
     // Run Python function
     const scriptProcess = spawn('python3', [filePath, functionName, parameter]);
 
