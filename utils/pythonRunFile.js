@@ -4,18 +4,18 @@ async function runPythonFunction(filePath, functionName, parameter) {
   try {
 
 
-    // Check if pip is installed
-    const checkProcess = spawn('pip', ['--version']);
-    const pipInstalled = await new Promise((resolve) => {
-      checkProcess.on('close', (code) => {
-        resolve(code === 0);
-      });
-    });
+    // // Check if pip is installed
+    // const checkProcess = spawn('pip', ['--version']);
+    // const pipInstalled = await new Promise((resolve) => {
+    //   checkProcess.on('close', (code) => {
+    //     resolve(code === 0);
+    //   });
+    // });
 
     // Install pip if it is not installed
-    if (!pipInstalled) {
+    // if (!pipInstalled) {
       console.log('Installing pip...');
-      const installProcess = spawn('yum', ['install', '-y', 'python3-pip']);
+      let installProcess = spawn('yum', ['install', '-y', 'python3-pip']);
 
       await new Promise((resolve, reject) => {
         installProcess.on('close', (code) => {
@@ -26,10 +26,10 @@ async function runPythonFunction(filePath, functionName, parameter) {
           }
         });
       });
-    }
+    // }
 
     // Install required libraries
-    const installProcess = spawn('pip', ['install', '-r', 'chatbot/requirements.txt']);
+    installProcess = spawn('pip', ['install', '-r', 'chatbot/requirements.txt']);
 
     await new Promise((resolve, reject) => {
       installProcess.on('close', (code) => {
