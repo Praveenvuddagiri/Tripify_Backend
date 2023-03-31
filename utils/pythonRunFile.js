@@ -15,7 +15,8 @@ async function runPythonFunction(filePath, functionName, parameter) {
     // Install pip if it is not installed
     if (!pipInstalled) {
       console.log('Installing pip...');
-      const installProcess = spawn('python', ['get-pip.py']);
+      const installProcess = spawn('yum', ['install', '-y', 'python3-pip']);
+
       await new Promise((resolve, reject) => {
         installProcess.on('close', (code) => {
           if (code !== 0) {
@@ -26,7 +27,7 @@ async function runPythonFunction(filePath, functionName, parameter) {
         });
       });
     }
-    
+
     // Install required libraries
     const installProcess = spawn('pip', ['install', '-r', 'chatbot/requirements.txt']);
 
