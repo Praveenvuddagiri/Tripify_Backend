@@ -41,6 +41,7 @@ const place = require('./routes/place');
 const service = require('./routes/service');
 const tourOperator = require('./routes/tourOperator');
 const hotel = require('./routes/hotel');
+const chatbot = require('./routes/chatbot');
 
 //cookie access
 const cookieParser = require('cookie-parser');
@@ -65,6 +66,7 @@ app.use('/api/v1', place);
 app.use('/api/v1', service);
 app.use('/api/v1', tourOperator);
 app.use('/api/v1', hotel);
+app.use('/api/v1', chatbot);
 
 
 //to handle production error
