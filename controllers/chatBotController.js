@@ -1,15 +1,28 @@
-const express = require('express');
-const bigPromise = require('../middlewares/bigPromise');
-const runPythonFunction = require('../utils/pythonRunFile');
 
-const app = express();
-const port = 3000;
+const bigPromise = require('../middlewares/bigPromise');
+const { askChatBot, trainChatBot } = require('../utils/chatbot');
+
 
 exports.askQuestion = bigPromise(async (req, res, next) => {
     const param = req.query.question;
-    const result = await runPythonFunction('chatbot/chat.py', 'my_function', param);
+
+    const answer = await askChatBot(param);
+
     res.status(200).json({
-        success: true,
-        result
-    });
+        success:true,
+        answer
+    })
+    
+});
+
+
+exports.trainChatBotAdmin = bigPromise(async (req, res, next) => {
+
+    trainChatBot();
+
+    res.status(200).json({
+        success:true,
+        message: "Trained the bot successfully"
+    })
+    
 });

@@ -1,0 +1,801 @@
+{
+    "dataset":[
+        {
+            "tag":"greeting",
+            "patterns":[
+                "Hi",
+                "Hello",
+                "How are you",
+                "Is anyone there",
+                "Hey",
+                "Good day"
+            ],
+            "responses":[
+                "Hello, thanks for visiting",
+                "Hi there, what can I do for you?",
+                "Hi there, how can I help?",
+                "Hello, how May I help you?"
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": ["Bye", "See you later", "Goodbye"],
+            "responses": [
+              "See you later, thanks for visiting",
+              "Have a nice day",
+              "Bye! Come back again soon."
+            ]
+        },
+        {
+          "tag": "thanks",
+          "patterns": ["Thanks", "Thank you", "That's helpful", "Thank's a lot!"],
+          "responses": ["Happy to help!", "Any time!", "My pleasure"]
+        },
+        {
+            "tag": "about",
+            "patterns":["About you","what is your name","how can i call you", "who are you", "what can you do","How do you work","tell me something about you","help me"],
+            "responses":["My name is Trek, I am an AI based chatbot, I can help you to get details about various tourism places in andaman."]
+        },
+        {
+            "tag": "andaman",
+            "patterns":["About andaman","Tell me about andaman", "port blair","where is andaman located",
+                        "Andaman and Nicobar Islands",
+                    "Why should I visit andaman"],
+            "responses":[
+                "The Andaman and Nicobar Islands, located in the east of the Indian mainland geographically, float in splendid isolation in the Bay of Bengal. Once a hill range extending from Myanmar to Indonesia, these picturesque undulating islands, islets numbering around 836, are covered with dense rain-fed, damp and evergreen forests and endless varieties of exotic flora and fauna. Most of these islands (about 550) are in the Andaman Group, 28 of which are inhabited. The smaller Nicobars, comprise some 22 main islands (10 inhabited). The Andaman and Nicobars are separated by the Ten Degree Channel which is 150 Kms. wide.<br><a href='resources/about_andaman.pdf' target='_blank'><button type='button' class='btn btn-primary btn-floating mt-2'>About <i class='fas fa-download'></i></button></a>",
+                "The Andaman Islands are an Indian archipelago in the Bay of Bengal.There are roughly 300 islands in Andaman which are known for their palm-lined, white-sand beaches, mangroves and tropical rainforests. Coral reefs supporting marine life such as sharks and rays make for popular diving and snorkeling sites. Indigenous Andaman Islanders inhabit the more remote islands, many of which are off limits to visitors. <br><a href='resources/about_andaman.pdf' target='_blank'><button type='button' class='btn btn-primary btn-floating mt-2'>About <i class='fas fa-download'></i></button></a>"
+            ]
+        },
+        {
+            "tag":"bestTimeToVisit",
+            "patterns":["Best time to visit andaman ?","What is the best time to visit Andaman?",
+                "when to visit andaman and nicobar islands","Best season to visit"],
+            "responses":["The best time to visit Andaman & Nicobar Islands is considered between October and May as the weather is pleasant, just perfect for sightseeing, water sports, and beach excursion. Monsoons (July to September) are not always recommended because of the high tidal waves, incessant rains and strong winds."]       
+        },
+        {
+            "tag":"howToReachAndaman",
+            "patterns":["How to reach Andaman ?","Ways to visit andaman","Destination to andaman","Flights to andaman","ships to andaman"],
+            "responses":["The airport at Port Blair is well connected to all major cities of India. Ships are available from Kolkata, Vizag and Chennai but tickets must be booked in advance. Since a 3-day journey is exhausting, prefer flights as they are the more convenient option.",
+                "Being an island, Andaman is connected with India through sea and air routes only. The airport is located at Port Blair and there are direct flights from Kolkata, Chennai and Vishakhapatnam. Air India, Jet Airways, Go Air and Spice Jet airlines offer their services here."]       
+        },
+        {
+            "tag": "distanceAndaman",
+            "patterns":[
+                "Distance from chennai to andaman",
+                "how it is from chennai to andaman",
+                "port blair",
+                "kolkata",
+                "vishakapatanam",
+                "hyderabad",
+                "Delhi",
+                "Bangalore",
+                "Mumbai",
+                "kerala"
+            ],
+            "responses":[
+                "<br> Chennai to andaman or viceversa : 1367Km<br> Kolkata to andaman or viceversa : 1304Km<br> Visakhapatnam to andaman or viceversa : 1231km<br> Kerala to andaman or viceversa : 1790Km<br> Hyderabad to andaman or viceversa : 1661Km<br> Delhi to andaman or viceversa : 2485Km<br> Bangalore to andaman or viceversa : 1650Km<br> Mumbai to andaman or viceversa : 2278Km<br> These are the only places from where you can directly reach andaman through air or by sea." 
+            ]
+        },
+        {
+            "tag": "documentsAndamanForeigners",
+            "patterns": [
+                "What documents are required for foreign nationals traveling to Andaman?",
+                "documnets should be bought by foreigners to visit andaman",
+                "identity cards should be bought by foreigners"
+            ],
+            "responses":["Foreigners are required to carry their passport with a valid Indian visa. Restricted Area Permit will be issued at the airport or port, valid for 30 days, and can be extended for further 15 days upon expiry. There will be no further extensions. You need to go back to any Indian city and board flight again if you wish to explore Andaman."]
+
+        },
+        {
+            "tag": "documentsAndamanIndians",
+            "patterns": [
+                "Do Indians need a passport to visit Andaman?",
+                "documnets should be bought by indians to visit andaman",
+                "identity cards should be bought by indians"                
+            ],
+            "responses":["Indians do not require a passport to visit Andaman, only a valid adhar card is enough."]
+        },
+        {
+            "tag": "currencyUsed",
+            "patterns": [
+                "What is the currency in Andaman?",
+                "Where should I get my currency exchanged?",
+                "currency in Andaman"
+            ],
+            "responses":["Indian rupee is the currency used in Andaman. It is Preferable to carry cash with you as ATMs are only available at Port Blair and Havelock islands. The facility for exchange of currency is only available in Port Blair. Credit cards are only acceptable in big hotels and resorts."]
+        },
+        {
+            "tag": "localTransport",
+            "patterns": [
+                "What are the local transport options in Andaman?",
+                "how can I transport from one location to other in andaman",
+                "what type of travel options are available?"
+            ],
+            "responses":["Though you can get rickshaws or auto rides, it is better to hire a prepaid taxi. Taxis are also included in tour packages. for inter island, There are private and government ferries which connects Port Blair to other major islands. Tickets for Private ferries easily available in advance from local agents or directly from the company office as compared to government Ferries as for this ticket is available only at the Jetty counter on first come first served basis.<br>You can hire a bicycle on a daily basis at Port Blair and Havelock. Carry a license and helmet if you wish to hire a bike. There are no petrol stations and the fuel is sold in cans. If on a shoestring budget, you can travel by bus from Port Blair to Northern Andaman."]
+        },
+        {
+            "tag": "foodAndaman",
+            "patterns":[
+                "What are the food options in Andaman?",
+                "about food in andaman",
+                "variety of foods in andaman",
+                "What kind of food is popular in Andaman and Nicobar?",
+                "port blair special foods",
+                "what kind of food is available to eat in andaman"
+            ],
+            "responses":[
+                "Being an island, it is a heaven for seafood lovers. Besides that, a variety of Indian and continental food is also available. Finding vegetarian food in Andaman will not be a hassle.",
+                "The staple diet of Andaman includes rice, coconut, spices, and lots of seafood. In fact, being a group of islands, Andaman is a paradise for seafood lovers. From cuttlefish, crabs, lobsters, prawns, to the all-time favorite Red Snapper, you can taste a variety of seafood on these islands."
+            ]
+        },
+        {
+            "tag": "vegFoodAndaman",
+            "patterns": [
+                "Is veg available in Andaman?",
+                "About vegetarian food in andaman"
+            ],
+            "responses":[
+                "When you think about beaches in Andaman, the next thing that comes to your mind are the delicious seafood cuisine that is available on the islands. So, we can easily call this place a heaven for non-vegetarians. If you are a hardcore vegetarian, who prefers only to eat from places that cook vegetarian food in Andaman. It becomes a little difficult task. Still you find some pure veg restaurants ."
+            ]
+        },
+        {
+            "tag": "clothesAndaman",
+            "patterns":[
+                "What kind of clothes to wear in Andaman?",
+                "What type of clothes are weared in Andaman?",
+                "What to wear on your Andaman Trip ",
+                "what should i wear in andaman?"
+            ],
+            "responses":[
+                "You can wear light cotton clothing, sun dresses, shorts or shirts when sightseeing in Andaman.<br>Keep hats, caps, sunglasses handy, in order to stay protected under the sun. Bathing suits should be restricted to the beaches only. Dress modestly if you plan to visit any religious place.",
+                "Cotton is the most preferred material. Wear dresses, which can absorb sweat and dry easily. This helpsto keep you comfortable throughout the trip. Wear cap and sunscreens to avoid the harsh face of the sun."
+            ]
+        },
+        {
+            "tag": "daysToCover",
+            "patterns":[
+                "How many days are sufficient for Andaman?",
+                "how many days it will take to cover whole andaman",
+                "days needed or required to complete andaman tour"
+            ],
+            "responses":[
+                "A 6 Nights and 7 Days trip is best to cover all the main sightseeing activities. A 9 Nights and 10 Days will give you to time to explore all islands and activities at a leisure.",
+                "A 7-8 Days trip is enough to cover the main popular sightseeing but, but if you really want to explore it completely and wanna take buckets of beatuifull memories then At least 10-13 days will be suggestive to take in all the beauty in Andaman."
+            ] 
+        },
+        {
+            "tag": "languages",
+            "patterns":[
+                "Which languages are generally spoken in the Andamans?",
+                "Most Spoken Languages In Andaman And Nicobar Islands?",
+                "language should be known for visiting andaman",
+                "what is main language of andaman"
+            ],
+            "responses":[
+                "The most widely spoken language on the islands is Bengali followed by Hindi, Tamil, Telugu and Malayalam. Andaman Creole Hindi is also widely used as a trade language in the Andaman islands.",
+                "Bengali, Tamil, Malayalam, Hindi, and English are the main languages spoken in the Andamans",
+                "Most of the people speak know hindi and bengali (specially in North and Middle Andaman) However, Tamil, Telugu, Malayalam are also common in Andaman & Nicobar island. The habitants of the Andaman Islands have Andamanese which is a small group that speak Andamanese language as same as some groups of habitants speak Nicobari",
+                "You would see lot of Bengali, Telugu and Tamil peoples there in Andaman and Hindi, English and Bengali are generally spoken for communication."
+            ] 
+        },
+        {
+            "tag": "safetyAndaman",
+            "patterns":[
+                "Is it safe to visit  Andaman and nicobar Islands?",
+                "is it safe to visit Andaman Islands?",
+                "How safe is Andaman Islands"
+            ],
+            "responses":[
+                "Andaman is plenty safe. However, gaining some practical knowledge about the place is essential to be meticulous about the worst-case scenarios.",
+                "With a very low crime rate, Andaman is extremely safe and peaceful. Also, there have been no reports of communal violence.",
+                "Andaman is a safe place to visit. The locals are friendly and help tourists as much as they can. There are no specific areas which are unsafe, however, it is always advisable to take precautions and not leave your belongings unguarded. Petty thefts do occur but they are not common.",
+                "Andaman is absolutly safe area. It is having minimal crime which is negligible, People of Andaman live in peace environment and simple life."
+            ] 
+        },
+        {
+            "tag": "expenditureAndaman",
+            "patterns":[
+                "How much does a Andaman trip cost?",
+                "Is Andaman Islands a budget friendly place?",
+                "what is the cost for visiting andaman",
+                "how much it will cost to visit andaman",
+                "cost to visit andaman"
+            ],
+            "responses":[
+                "Andaman is comparatively cheaper then some of the competitive Tourist Destination, The cost of your Andaman package is calculated based on the place you visit, the hotel you choose, and the number of persons traveling.",
+                "If you are visiting with family, your per-person cost would be less than a couple on the same tour package. This is because the family will be sharing a vehicle where the cost is split between the people.",
+                "On an average a package for 7 Nights and above can cost you around Rupees 11,000 including foods, travelling and ticketing (Andaman Airport-Airport).",
+                "Andaman has a lot to offer for all kinds of travelers. If you are planning on a budget trip then you will find a lot of pocket friendly accommodation options. Do book your flights in advance to save up on those air ticket costs. Cost might add up depending on the type of water sports and activities you partake in."
+            ] 
+        },
+        {
+            "tag": "waterActivities",
+            "patterns":[
+                "Which island in Andaman is best for scuba diving?",
+                "What are the best places to do water sports in Andaman?",
+                "best island to experience water sports",
+                "what are the water sports can be done in andaman"
+            ],
+            "responses":[
+                "All the major water sports are done in Port Blair, Havelock,Neil Island and Jolly buoy.Island is a heaven for water sports and the islands offers some of the most unique water sports that anyone can do in the islands.<br>Boat riding, snorkeling, undersea walk, jet skiing, scuba diving, kayaking, seaplane rides, swimming in the pristine clear waters are some of the activities can be done in various beaches around andaman"
+                
+            ] 
+        },
+        {
+            "tag": "impromptuPlans",
+            "patterns":[
+                "can we plan a trip to andaman without any prebooked package",
+                "Is it Possible to visit andaman without any preplanning?",
+                "is it possible to visit andaman with a sudden plan"
+            ],
+            "responses":[
+                "yes,its possible but atleast you need to book private ferris by connecting them online, Just remember Monday all local sightseeing in port blair is closed,Baratang/ Jollybuoy is also closed in Monday and Ross island on wednesday"
+            ]
+        },
+        {
+            "tag": "bestBeaches",
+            "patterns":[
+                "What are the popular beaches of Andaman?",
+                "Best beach to visit in andaman",
+                "beautiful beach in andaman",
+                "andaman is famous for which beach"
+            ],
+            "responses":[
+                "Andaman is known for its popular Radhanagar beaches which is one of the best beaches in the Asia region.If you want to enjoy the calm waters and the sunset over the horizon, this is the place to be. Other popular tourist beaches of Andaman include Elephant beach, Kala Pathar, Wandoor, Corbyn’s Cove, Vijayanagar, Sitapur, Kalipur beach in Diglipur and many more."
+            ] 
+        },
+        {
+            "tag": "andamanCrafts",
+            "patterns":[
+                "What is famous for shopping in Andaman?",
+                "what can we take back from Andaman ?",
+                "Special things to buy in andaman"
+            ],
+            "responses":[
+                "You can buy local wooden artifacts and handmade decorations pieces made of coconut sheels,shell ornaments and pearl jewelry,apart from this andamani spices like long,dhalchini is famous for its high quality essence"
+            ] 
+        },
+        {
+            "tag": "govtGuestHouse",
+            "patterns":[
+                "Is there any government guest house available for tourists?",
+                "how can we check for government guest house availability",
+                "who are eligible for booking government guest houses",
+                "I want to book a government guest house.",
+                "help me in booking government guset house booking.",
+                "I need a guest house.",
+                "I want to book a room in government hotel.",
+                "Government guest house.",
+                "Goverment hotels ",
+                "can i get a government guest house ?"
+            ],
+            "responses":[
+                "There are many Govt. Guesthouse available offered by different Govt. Departments like Circuit House, Tourism Guest House and CPWD Guest House etc. <br> For booking any of the government guest house, go through the following link: <br> <a href='https://www.andamantourism.gov.in/govt_acco.php' target='_blank'>Click Here</a>"
+            ] 
+        },
+        {
+            "tag":"placestoVisit",
+            "patterns":["Places to visit in andaman and nicobar islands",
+                "Places that must be visited in andaman",
+                "Major areas to be visited in andman",
+                "Cities to be visited in andaman",
+                "Must visited islands in andaman",
+                "Places to visit in andaman"
+            ],
+            "responses":[
+                "Best places to visit in Andaman and Nicobar Islands are:<br>1.Port Blair<br>2.Havelock renamed as Swaraj Dweep<br>3.Baratang Island<br>4.Neil Island renamed as Shaheed Dweep<br>5.Ross Island renamed as Netaji Subhash Chandra Bose Island<br>6.Rangat<br>7.The Great Nicobar Island<br>8.Hutbay"
+            ]
+        },
+        {
+            "tag": "weatherInAndaman",
+            "patterns":[
+                "climatic conditions in andaman.",
+                "weather Comdition in andaman",
+                "Tell me about the climatic conditions in andaman",
+                "How will be the weather in andaman"
+            ],
+            "responses":[
+                "The islands have a tropical climate. The South-west Monsoon sets in Andaman Nicobar islands towards the end of May and the North-east Monsoon in November. There is no fury of hot summer, no chilling winter, no water clogging or traffic jams. For those who want to enjoy boating, swimming, snorkeling, sightseeing all 12 months is season. North Indians find relief from burning heat and chilling winter if they visit the island from May/June/July and in December/January. Season for nature lovers is May to December when forest is lush green and waterfalls are at their prime. Divers can enjoy the best during December to April and bird watchers during winter times. <br> For more details: https://www.google.com/search?q=weather+in+andamn&oq=weather+in+andamn "
+            ]
+        },
+        {
+            "tag":"tourismBrouchures",
+            "patterns":[
+                "Can I get brouchures on varoius places in andaman",
+                "Need brouchures about places in andaman",
+                "Need details about places in andaman",
+                "Brouchure of port blair"
+            ],
+            "responses":[
+                "Please Visit to the Website URL provided:  <a href='https://www.andamantourism.gov.in/Brochures.php' target='_blank'>Click Here</a><br> OR <br><a href='resources/PortBlair_Brochure.pdf' target='_blank'><button type='button' class='btn btn-primary btn-floating mt-2'>Brouchure<i class='fas fa-download'></i></button></a>"
+            ]
+        },
+        {
+            "tag":"placestoVisitInPortBlair",
+            "patterns":[
+                "Places to visit in port blair",
+                "Must seen places in port blair",
+                "Major areas to be visited in port blair",
+                "places to be visited in port blair",
+                "suggest me some places to be visited in port blair",
+                "Best places to visit in port blair"
+            ],
+            "responses":[
+                "Places to Visit in Port Blair<br>1.Cellular Jail<br>2.Wandoor Beach<br>3.Mahatma Gandhi Marine National Park<br>4.Japanese Bunkers<br>5.Chatham Saw Mill<br>6.Corbyns Cove Beach<br>7.Chidiya Tapu Beach and Sunset<br>8.Samudrika Marine Museum<br>9.North Bay Island<br>10.Jolly Buoy Island<br>11.Mount Harriet National Park<br>12.Anthropological Museum<br>13.Sippighat Agricultural Farm<br>14.Loacl Parks<br>15.Ross Island"
+            ]
+        },
+        {
+            "tag":"aboutCellularJail",
+            "patterns":[
+                "Tell me about cellular Jail",
+                "Why to visit cellular jail",
+                "Where is cellular jail located",
+                "What is there to see in cellular jail",
+                "Activites can be done in cellular jail",
+                "cellular Jail"
+            ],
+            "responses":[
+                "This three-storeyed prison, constructed by Britishers in 1906, is a pilgrimage destination for freedom fighters.<br> This colossal edifice has mutely witnessed the most treacherous of inhumane atrocities borne by the convicts, who were mostly freedom fighters. Now dedicated to the nation as a National Memorial."
+            ]
+        },
+        {
+            "tag": "CellularJailTimes",
+            "patterns":[
+                "Visiting timings for cellular jail",
+                "when to visit cellular jail"
+            ],
+            "responses":[
+                "The saga of the heroic freedom struggle is brought alive in a moving Son-et-Lumiere, shown daily inside the jail compound at 6.00 PM (Hindi) and 7.15 PM (English). Also there is a Museum, an Art gallery, and a Photo gallery, which are open on all days except Monday from 9.00 AM to 12 Noon and 2.00 PM to 5.00 PM."
+            ]
+        },
+        {
+            "tag": "cellularJailTickets",
+            "patterns":[
+                "Entry ticket price for cellular jail",
+                "Light and sound timings in cellular jail",
+                "can we book tickets online for visiting cellular jail",
+                "Book tickets for visiting cellualr jail",
+                "How to get tickets for cellular jail"
+            ],
+            "responses":[
+                "For booking tickets online and for getting details of tickets go through given link : <a href='https://www.andamantourism.gov.in/etourist/index.php/home/faredetails/#cellu' target='_blank'>Click Here</a>   "
+            ]
+        },
+        {
+            "tag":"aboutWandoorBeach",
+            "patterns":[
+                "Tell me about wandoor beach",
+                "Why to visit wandoor beach",
+                "Where is wandoor beach located",
+                "What is there to see in wandoor beach",
+                "Activites can be done in wandoor beach",
+                "Visiting timings for wandoor beach",
+                "when to visit wandoor beach",
+                "wandoor beach"
+            ],
+            "responses":[
+                "About 29 Kms. west of Port Blair is the famous Wandoor beach known for scenic beauty and is very popular amongst tourists.<br>Plan your visit in summers if you wish to experience the beach at its best."
+            ]
+        },
+        {
+            "tag":"wandoorBeachTimes",
+            "patterns":[
+                "Visiting timings for wandoor beach",
+                "when to visit wandoor beach",
+                "Entry ticket price for wandoor beach"
+            ],
+            "responses":[
+                "There is no entry ticket for visiting Wandoor Beach.<br>Allowed visiting time - 4:00 AM - 9:00 PM."
+            ]
+        },
+        {
+            "tag":"aboutMahatmaGandhiMarineNationalPark",
+            "patterns":[
+                "Tell me about Mahatma Gandhi Marine National Park",
+                "Why to visit Mahatma Gandhi Marine National Park",
+                "Where is Mahatma Gandhi Marine National Park located",
+                "What is there to see in Mahatma Gandhi Marine National Park",
+                "Activites can be done in Mahatma Gandhi Marine National Park",
+                "Visiting timings for Mahatma Gandhi Marine National Park",
+                "when to visit Mahatma Gandhi Marine National Park",
+                "Entry ticket price for Mahatma Gandhi Marine National Park",
+                "Mahatma Gandhi Marine National Park"
+            ],
+            "responses":[
+                "Mahatma Gandhi Marine National Park is a national park of India near Wandoor on the Andaman Islands.<br>Protects marine life such as the corals and nesting sea turtles prevalent in the area.<br>Open creeks running through the park area were a special attraction.<br><br>For more details please visit: https://andamantourism.org.in/mahatma-gandhi-marine-national-park-andaman "
+            ]
+        },
+        {
+            "tag":"aboutChathamSawMill",
+            "patterns":[
+                "Tell me about chatham saw mill",
+                "Why to visit chatham saw mill",
+                "Where is chatham saw mill located",
+                "What is there to see in chatham saw mill",
+                "Activites can be done in chatham saw mill",
+                "Chatham Saw Mill"
+            ],
+            "responses":[
+                "Chatham Saw Mill is the saw mill situated in Chatham Island of Andaman and Nicobar Islands in India.<br>The Chatham saw mill also homes a museum that features a great and unique collection of woodwork, hand-carved items and a lot more, that transports you back in time when the mill was in its golden period."
+            ]
+        },
+        {
+            "tag": "chathamSawMillTimes",
+            "patterns":[
+                "Visiting timings for chatham saw mill",
+                "when to visit chatham saw mill"
+            ],
+            "responses":[
+                "The timing to visit the mill is 8 in the morning to 2:30 in the afternoon and sunday will be closed."
+            ]
+        },
+        {
+            "tag": "chathamSawMillTickets",
+            "patterns":[
+                "Entry ticket price for chatham saw mill",
+                "Light and sound timings in chatham saw mill",
+                "can we book tickets online for visiting chatham saw mill",
+                "Book tickets for visiting chatham saw mill",
+                "How to get tickets for chatham saw mill",
+                "how to buy tickets for chatham saw mill"
+            ],
+            "responses":[
+                "For getting details of tickets go through given link : <a href='https://andamantourism.org.in/chatham-saw-mill-andaman' target='_blank'>Click Here</a> "
+            ]
+        },
+        {
+            "tag":"aboutCorbynsCoveBeach",
+            "patterns":[
+                "Tell me about corbyns cove beach",
+                "Why to visit corbyns cove beach",
+                "Where is corbyns cove beach located",
+                "What is there to see in corbyns cove beach",
+                "Activites can be done in corbyns cove beach",
+                "Visiting timings for corbyns cove beach",
+                "when to visit corbyns cove beach",
+                "Corbyns Cove Beach"
+            ],
+            "responses":[
+                "Corbyns Cove beach- the coconut-palm fringed beach, six kilometers away from Port Blair town is ideal for swimming and sun-basking. Facilities like hotel, restaurant, bar, changing room, adventure water-sports are available here. Historical remains like Japanese Bunkers can be seen on the way to this beach. The Snake Island situated just across the beach is popular for scuba diving. "
+            ]
+        },
+        {
+            "tag":"corbynsCoveBeachTimes",
+            "patterns":[
+                "Visiting timings for Corbyns Cove Beach",
+                "when to visit Corbyns Cove Beach",
+                "Entry ticket price for Corbyns Cove Beach"
+            ],
+            "responses":[
+                "There is no entry ticket for visiting Corbyns Cove Beach.<br>Allowed visiting time - Any time."
+            ]
+        },
+        {
+            "tag":"aboutChidiyaTapuBeach",
+            "patterns":[
+                "Tell me about chidiya tapu beach",
+                "Why to visit chidiya tapu beach",
+                "Where is chidiya tapu beach located",
+                "What is there to see in chidiya tapu beach",
+                "Activites can be done in chidiya tapu beach",
+                "Visiting timings for chidiya tapu beach",
+                "when to visit chidiya tapu beach",
+                "tell me about chidiya tapu sunset",
+                "Chidiya Tapu Beach"
+            ],
+            "responses":[
+                "Chidiya tapu is a carpet of rich mangrove forests that host numerous species of birds. This eco-park, at the southernmost tip of the South Andaman Island, is situated at a distance of 28 km from Port Blair, the capital of the archipelago. There are regular bus services from Port Blair to Chidiya tapu.<br>Apart from being a birdwatching paradise, this place is also popular for its picnic spots, trekking trails and glorious sunset views. <br>The biological park at Chidiya tapu, with its rich and diverse flora and fauna, is also a must-visit."
+            ]
+        },
+        {
+            "tag":"chidiyaTapuBeachTimes",
+            "patterns":[
+                "Visiting timings for chidiya tapu beach",
+                "when to visit chidiya tapu beach",
+                "Entry ticket price for chidiya tapu beach"
+            ],
+            "responses":[
+                "There is no entry ticket for visiting Chidiya Tapu Beach.<br>Allowed visiting time - Any time."
+            ]
+        },
+        {
+            "tag":"chidiyaTapuParkTickets",
+            "patterns":[
+                "Entry ticket price for biological park at Chidiya tapu",
+                "Light and sound timings in biological park at Chidiya tapu",
+                "can we book tickets online for visiting biological park at Chidiya tapu",
+                "Book tickets for visiting biological park at Chidiya tapu",
+                "How to get tickets for biological park at Chidiya tapu"
+            ],
+            "responses":[
+                "There is an entry fee of Rs 25 for the Biological Park.<br>The Biological Park timings are 9 am to 4 pm. <br>Tickets are not avaliable to bye online."
+            ]
+        },
+        {
+            "tag":"aboutSamudrikaMarineMuseum",
+            "patterns":[
+                "Tell me about Samudrika Naval Marine Museum",
+                "Why to visit Samudrika Naval Marine Museum",
+                "Where is Samudrika Naval Marine Museum located",
+                "What is there to see in Samudrika Naval Marine Museum",
+                "Activites can be done in Samudrika Naval Marine Museum",
+                "Samudrika Marine Museum"
+            ],
+            "responses":[
+                "This museum is run by Indian Navy and it is focused on creating general awareness about the marine life and the ocean of the region.<br>The museum also has collection of corals, sculptures related to marine life, and much more. "
+            ]
+        },
+        {
+            "tag": "samudrikaMarineMuseumTimes",
+            "patterns":[
+                "Visiting timings for Samudrika Naval Marine Museum",
+                "when to visit Samudrika Naval Marine Museum"
+            ],
+            "responses":[
+                "The museum is open from Tuesday to Sunday.<br>Timing : 9 am to 1 pm and from 2 pm to 5 pm"
+            ]
+        },
+        {
+            "tag": "samudrikaMarineMuseumTickets",
+            "patterns":[
+                "Entry ticket price for Samudrika Naval Marine Museum",
+                "Light and sound timings in Samudrika Naval Marine Museum",
+                "can we book tickets online for visiting Samudrika Naval Marine Museum",
+                "Book tickets for visiting Samudrika Naval Marine Museum",
+                "How to get tickets for Samudrika Naval Marine Museum"
+            ],
+            "responses":[
+                "Entry fee for adults is INR 50<br>Entry fee for children is INR 25<br>Camera fee is INR 20<br>Video camera fee is INR 50"
+            ]
+        },
+        {
+            "tag":"aboutNorthBayIsland",
+            "patterns":[
+                "Tell me about North Bay Island",
+                "Why to visit North Bay Island",
+                "Where is North Bay Island located",
+                "What is there to see in North Bay Island",
+                "Activites can be done in North Bay Island",
+                "North Bay Island"
+            ],
+            "responses":[
+                "North Bay, the so called Coral Island is famous for two things. One- the beautiful underwater corals and two- the Lighthouse which is also inscribed on our Twenty rupees note. This place is ideal for all sorts of water activities like Scuba dive, snorkeling and seawalk. Also loved the short walk to reach the Lighthouse. The view of the turquoise blue water from the Lighthouse is very fascinating. Would definitely not suggest for the glass bottom boat ride. Though you can have a glimpse of corals through the glass bottom boat, it's not really worth it."
+            ]
+        },
+        {
+            "tag":"NorthBayIslandTimes",
+            "patterns":[
+                "Visiting timings for North Bay Island",
+                "when to visit North Bay Island",
+                "Entry ticket price for North Bay Island"
+            ],
+            "responses":[
+                "Boats for Ross and North bay are available at Phoenix bay jetty,Port Blair by 9.00am.<br>Port Blair is around 42.4 Km away from North Bay Island and the journey from Port Blair to North Bay Island lasts for 75-minutes and costs INR 500 per person."
+            ]
+        },
+        {
+            "tag":"aboutJollyBuoyIsland",
+            "patterns":[
+                "Tell me about Jolly Buoy Island",
+                "Why to visit Jolly Buoy Island",
+                "Where is Jolly Buoy Island located",
+                "What is there to see in Jolly Buoy Island",
+                "Activites can be done in Jolly Buoy Island",
+                "Jolly Buoy Island"
+            ],
+            "responses":[
+                "An island in Mahatma Gandhi Marine National Park, it offers a breath taking underwater view of coral and marine life. It is an ideal place for snorkeling , sea bathing and basking on the sun kissed beach. To reach Jolly buoy island people have to come to Wandoor beachThis is located in Mahatma Gandhi National Park."
+            ]
+        },
+        {
+            "tag":"JollyBuoyIslandTimes",
+            "patterns":[
+                "Visiting timings for Jolly Buoy Island",
+                "when to visit Jolly Buoy Island",
+                "Entry ticket price for Jolly Buoy Island"
+            ],
+            "responses":[
+                "Entry Tickets: <br>A trip to Jolly Buoy costs Rs. 950/-, which includes Boat Tickets and Permits.<br>The timings to visit the Jolly Buoy Island is around 8 am to 2 pm in the noon ."
+            ]
+        },
+        {
+            "tag":"aboutMountHarrietNationalPark",
+            "patterns":[
+                "Tell me about Mount Harriet National Park",
+                "Why to visit Mount Harriet National Park",
+                "Where is Mount Harriet National Park located",
+                "What is there to see in Mount Harriet National Park",
+                "Activites can be done in Mount Harriet National Park",
+                "Visiting timings for Mount Harriet National Park",
+                "when to visit Mount Harriet National Park",
+                "Entry ticket price for Mount Harriet National Park",
+                "Mount Harriet National Park",
+                "Mount Manipur"
+            ],
+            "responses":[
+                "One of the many national parks in the Andaman Islands is the Mount Harriet National Park, which is considered as the main attraction and highest peak in the Archipelago of South Andaman.  The main feature of Mount Harriet is its fauna and natural flora, which are up to now still unmatched.  Just like a forest, Mount Harriet is covered with greenery and Port Blair can be seen from the top of the mount’s peak.<br> It take 15 – 20 minutes by boat from Port Blair to Bamboo flat and another 15 – 20 minutes by road from Bamboo flat to Mount Harriet."
+            ]
+        },
+        {
+            "tag":"aboutAnthropologicalMuseum",
+            "patterns":[
+                "Tell me about Anthropological Museum",
+                "Why to visit Anthropological Museum",
+                "Where is Anthropological Museum located",
+                "What is there to see in Anthropological Museum",
+                "Activites can be done in Anthropological Museum",
+                "Anthropological Museum",
+                "Anthropology museum"
+            ],
+            "responses":[
+                "Anthropological Museum is one of the best museums in town to visit. It is a well maintained museum which tells us more about this island’s local tribes. These tribes are also believed to be one of the oldest in the world. The islands have six main tribes native to this place, Onges, Sentinelese, Jarawas, Andamanese, Shompens and Nicobarese. These tribes maintain limited contact with the world, and not a lot is known about them."
+            ]
+        },
+        {
+            "tag": "AnthropologicalMuseumTimes",
+            "patterns":[
+                "Visiting timings for Anthropological Museum",
+                "when to visit Anthropological Museum"
+            ],
+            "responses":[
+                "Timings of Anthropological Museum In Port Blair: 9:00 am – 1:00 pm and 1:30 pm – 4:30 pm (Monday closed)"
+            ]
+        },
+        {
+            "tag": "AnthropologicalMuseumTickets",
+            "patterns":[
+                "Entry ticket price for anthropological Museum",
+                "Light and sound timings in anthropological Museum",
+                "can we book tickets online for visiting anthropological Museum",
+                "Book tickets for visiting anthropological Museum",
+                "How to get tickets for anthropological Museum"
+            ],
+            "responses":[
+                "Entry fee of Anthropological Museum In Port Blair:<br>Adults: INR 10<br>Student (with ID): INR 3<br>Camera: INR 20"
+            ]
+        },
+        {
+            "tag":"aboutSippighatAgriculturalFarm",
+            "patterns":[
+                "Tell me about Sippighat Agricultural Farm",
+                "about Sippighat Agricultural Farm",
+                "Why to visit Sippighat Agricultural Farm",
+                "Where is Sippighat Agricultural Farm located",
+                "What is there to see in Sippighat Agricultural Farm",
+                "Activites can be done in Sippighat Agricultural Farm",
+                "Sippighat Agricultural Farm",
+                "Sippighat Farm",
+                "Agricultural Farm",
+                "shipighat Farm"
+            ],
+            "responses":[
+                "Resplendent with natural beauty, the place is known for farming of nuts and spices in the area. The farm covers an area of about 80 acres of cultivated land. This farm is a part of the research and development program of the Government of Andaman and Nicobar islands aimed towards increasing agriculture."
+            ]
+        },
+        {
+            "tag": "sippighatAgriculturalFarmTimes",
+            "patterns":[
+                "Visiting timings for Sippighat Agricultural Farm",
+                "when to visit Sippighat Agricultural Farm",
+                "time required to visit sippighat farm?"
+            ],
+            "responses":[
+                "The farm opens from 9:00 am to 1:00 pm<br>The time required to visit Sippighat Farm is an hour."
+            ]
+        },
+        {
+            "tag": "sippighatAgriculturalFarmTickets",
+            "patterns":[
+                "Entry ticket price for Sippighat Agricultural Farm",
+                "Light and sound timings in Sippighat Agricultural Farm",
+                "can we book tickets online for visiting Sippighat Agricultural Farm",
+                "Book tickets for visiting Sippighat Agricultural Farm",
+                "How to get tickets for Sippighat Agricultural Farm"
+            ],
+            "responses":[
+                "There is No Entry Fee for visiting Sippighat Agricultural Farm."
+            ]
+        },
+        {
+            "tag":"aboutLocalParks",
+            "patterns":[
+                "Tell me about local parks in port blair",
+                "tell me about local parks",
+                "about marina park",
+                "about gandhi park",
+                "about veer sarvakar park",
+                "about joggers park",
+                "Where are local parks located",
+                "parks in port blair to visit",
+                "best parks in port blair",
+                "What is there to see in local Parks",
+                "Activites can be done in local parks",
+                "Visiting timings for local Parks",
+                "Entry ticket price for local parks in port blair",
+                "entry tickets for visiting local parks",
+                "Loal parks",
+                "local parks in port blair",
+                "local parks in andaman"
+            ],
+            "responses":[
+                "Local parks in port blair are : <br>1.Marina park located at Aberdeen Bazar<br>2.Gandhi park located near LG Bungalow<br>3.Joggers park located at shadipur<br>4.Veer sarvakar park located at chouldari<br>5. chidiyatapu biological park<br>6.Nature park located at hadoo<br> Entry fee for all above mentioned parks are totally free.<br>Best time to visit all the parks is 2pm-8pm."
+            ]
+        },
+        {
+            "tag":"aboutRossIsland",
+            "patterns":[
+                "Tell me about Ross Island",
+                "Why to visit Ross Island",
+                "Where is Ross Island located",
+                "What is there to see in Ross Island",
+                "Activites can be done in Ross Island",
+                "Ross Island"
+            ],
+            "responses":[
+                "Ross Island is a beautiful destination to visit when in Andaman and Nicobar Islands. This is a lovely place to tour if you want to make a day out it by traversing for hours amidst its historical importance. Ross Island was the headquarters of the British colony and today it houses its ruins of the buildings that were built during the British time. The Islands century old trees have captured few important landmarks by its wild vines, roots, and trunks like the Officers Quarters and rundown Church of the British times.<br>Ross Island also offers a light and sound show on all days excluding Wednesdays and public holidays. The light and sound show depicts the island’s historical events that happened during the pre-independent era, set up of the first administrative settlement and insight about various other historical events that took place on the islands. "
+            ]
+        },
+        {
+            "tag":"RossIslandTimes",
+            "patterns":[
+                "Visiting timings for Ross Island",
+                "when to visit Ross Island",
+                "Entry ticket price for Ross Island"
+            ],
+            "responses":[
+                "Boats for Ross and North bay are available at Phoenix bay jetty,Port Blair by 7.00am.<br>There are plenty of ferry ride from Marine Park, Port Blair. To cover the entire Island in a day, it is wise to take a ferry in the morning and return back in the afternoon because the ferries run from 7 am to 3 pm.<br>And cost for visiting ross island is around 300Rs per head in a private ferry orelse if you go with government ferry it will cost nearly 5Rs per head."
+            ]
+        },
+        {
+            "tag":"RossIslandLightAndSound",
+            "patterns":[
+                "Tell me about light and sound show at Ross Island",
+                "Why to visit light and sound ross island",
+                "Light and sound show at ross island",
+                "what is light and sound at ross",
+                "Light and sound at ross island",
+                "light and sound ross island",
+                "Visiting timings for light and sound at Ross Island",
+                "when to visit for light and sound at Ross Island",
+                "Ticket price for light and sound at Ross Island"
+            ],
+            "responses":[
+                "Ross Island also offers a light and sound show on all days excluding Wednesdays and public holidays. The light and sound show depicts the island’s historical events that happened during the pre-independent era, set up of the first administrative settlement and insight about various other historical events that took place on the islands.<br>This show thrills its audience with great lighting and music that is used to display the struggle of the freedom fighters and the life of the British administrators in this Island takes them back in time.<br>The show commences around 5.15 PM (depending on Sunset time), for which a boat has to be boarded 4 PM sharp at Rajiv Gandhi Water Sports Complex and the destination will be reached in 15 minutes of the boat ride.<br>Entry fee: Adult- Rs. 250/- (inclusive of Boat tickets, entry fee to Ross Island and show charges), Children (5 to 12 Years)- Rs. 150/- (inclusive of Boat tickets, entry fee to Ross Island and show charges)."
+            ]
+        },
+        {
+            "tag":"placestoVisitInHavelock",
+            "patterns":[
+                "Places to visit in Havelock island",
+                "Must seen places in Havelock island",
+                "Major areas to be visited in Havelock island",
+                "places to be visited in Havelock island",
+                "suggest me some places to be visited in Havelock island",
+                "havelock island",
+                "Havelock",
+                "Swaraj Dweep",
+                "Places to visit in Swaraj Dweep",
+                "Must seen places in Swaraj Dweep",
+                "Major areas to be visited in Swaraj Dweep"
+                
+            ],
+            "responses":[
+                "Places to Visit in Havelock / Swaraj Dweep:<br>1.Cellular Jail<br>2.Wandoor Beach<br>3.Mahatma Gandhi Marine National Park<br>4.Japanese Bunkers<br>5.Chatham Saw Mill<br>6.Corbyns Cove Beach<br>7.Chidiya Tapu Beach and Sunset<br>8.Samudrika Marine Museum<br>9.North Bay Island<br>10.Jolly Buoy Island<br>11.Mount Harriet National Park<br>12.Anthropological Museum<br>13.Sippighat Agricultural Farm<br>14.Loacl Parks<br>15.Ross Island"
+            ]
+        },
+        {
+            "tag":"hotelsInPortblair",
+            "patterns":[
+                "hotels in port blair",
+                "best hotels in port blair",
+                "I want to book a room in port blair",
+                "Show me some budject hotels in port blair",
+                "show be best hotels in port blair"
+            ],
+            "responses":[
+                "Go through the following link for best hotels in port blair:<br> <a href='https://www.google.com/maps/search/best+hotels+in+port+blair/@11.6473555,92.7162213,14z/data=!3m1!4b1' target='_blank'> Click Here </a>"
+            ]
+            
+        }
+    ]
+}
