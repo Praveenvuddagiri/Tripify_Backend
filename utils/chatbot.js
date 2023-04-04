@@ -33,7 +33,10 @@ const askChatBot = async (question) => {
     await manager.load(datasetPath);
     let response = await manager.process('en', question);
     response = JSON.parse(JSON.stringify(response));
-    return response.answer;
+
+    return response.answer ? 
+            response.answer:
+            "I'm sorry, but I'm still learning and may not fully understand your request. Can you please provide more details or rephrase your question so I can better assist you?";
 }
 
 
