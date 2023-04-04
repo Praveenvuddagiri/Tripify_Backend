@@ -4,6 +4,7 @@ const Bigpromise = require('../middlewares/bigPromise');
 const CustomError = require('../utils/customError');
 const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
+const { DescriptionBasedRecommender } = require('../utils/recomendationSystem');
 
 
 exports.addPlace = Bigpromise(async (req, res, next) => {
@@ -338,3 +339,25 @@ exports.getReviewOnePersonOnePlace = Bigpromise(async (req, res, next) => {
         
     })
 })
+
+
+exports.getRecomendedPlacesToPlace = Bigpromise(async (req, res, next) => {
+    const placeId = req.params.id;
+    let place = await Place.findById(placeId)
+
+    if(!place){
+        return next(new CustomError("No place found.",400))
+    }
+
+    const similarPlaces = DescriptionBasedRecommender(placeId)
+
+    console.log(similarPlaces);
+
+
+    res.status(200).json({
+        success: true,
+        similarPlaces
+    })
+})
+
+

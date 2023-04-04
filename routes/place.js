@@ -11,7 +11,8 @@ const {
     getOnlyReviewsForOnePlace,
     deleteReview,
     getReviewOnePersonOnePlace,
-    getPlacesNearby
+    getPlacesNearby,
+    getRecomendedPlacesToPlace
 } = require('../controllers/placeController');
 
 const { isLoggedIn, customRole } = require('../middlewares/user');
@@ -20,6 +21,7 @@ const { isLoggedIn, customRole } = require('../middlewares/user');
 router.route('/place/all').get( getAllPlaces);
 router.route('/place/:id').get( getPlaceById);
 router.route('/places/nearby').get( getPlacesNearby);
+router.route('/place/similarContent/:id').get(getRecomendedPlacesToPlace);
 router.route('/review').put(isLoggedIn, addReview);
 router.route('/review').delete(isLoggedIn, deleteReview);
 router.route('/reviews').get( getOnlyReviewsForOnePlace);
