@@ -12,7 +12,8 @@ const {
     deleteReview,
     getReviewOnePersonOnePlace,
     getPlacesNearby,
-    getRecomendedPlacesToPlace
+    getRecomendedPlacesToPlace,
+    trainRecomendedPlacesToPlace
 } = require('../controllers/placeController');
 
 const { isLoggedIn, customRole } = require('../middlewares/user');
@@ -33,5 +34,6 @@ router.route('/admin/place/:id')
     .delete(isLoggedIn, customRole("admin"), adminDeletePlaceById)
     .put(isLoggedIn, customRole("admin"), adminUpdatePlace)
 router.route('/admin/place/add').post(isLoggedIn, customRole('admin'), addPlace);
+router.route('/admin/place/similarContent/train').get(isLoggedIn, customRole('admin'), trainRecomendedPlacesToPlace);
 
 module.exports = router

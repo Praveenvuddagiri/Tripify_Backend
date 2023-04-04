@@ -1,11 +1,21 @@
 
 const Place = require('../models/place');
 const ContentBasedRecommender = require('content-based-recommender')
-
-
-
+const fs = require('fs');
 
 exports.DescriptionBasedRecommender = async (placeId) => {
+
+    // read the contents of the JSON file
+    const recommender = new ContentBasedRecommender();
+    const data = fs.readFileSync('recommenderObject.json');
+    const object = JSON.parse(data);
+    recommender.import(object);
+    const similarPlaces = await recommender.getSimilarDocuments(placeId, 0, 10);
+
+    return similarPlaces;
+}
+
+exports.trainDescriptionBasedRecommender = async () => {
     const places = await Place.find();
     const recommender = new ContentBasedRecommender({
         minScore: 0.1,
@@ -14,20 +24,20 @@ exports.DescriptionBasedRecommender = async (placeId) => {
 
     // prepare documents data
     const documents = places.map((place) => {
-        {
-            id : place._id
+        return {
+            id: place._id.toString(),
             content: place.description
         }
     })
 
-    console.log(documents);
-
     // start training
     recommender.train(documents);
 
-    //get top 10 similar items to document 1000002
-    const similarPlaces = recommender.getSimilarDocuments(placeId, 0, 6);
+    const object = recommender.export();
 
-    return similarPlaces;
-
+    fs.writeFile('recommenderObject.json', JSON.stringify(object), (err) => {
+        if (err)
+            throw err;
+        // console.log('Recommender object saved to file');
+    });
 }

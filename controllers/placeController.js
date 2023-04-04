@@ -4,7 +4,7 @@ const Bigpromise = require('../middlewares/bigPromise');
 const CustomError = require('../utils/customError');
 const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
-const { DescriptionBasedRecommender } = require('../utils/recomendationSystem');
+const { DescriptionBasedRecommender, trainDescriptionBasedRecommender } = require('../utils/recomendationSystem');
 
 
 exports.addPlace = Bigpromise(async (req, res, next) => {
@@ -34,6 +34,10 @@ exports.addPlace = Bigpromise(async (req, res, next) => {
     //     })
     
     const place = await Place.create(req.body);
+
+
+    //whenever a new place is added updating the reommender system
+    await trainDescriptionBasedRecommender();
 
     res.status(200).json({
         success: true,
@@ -349,15 +353,25 @@ exports.getRecomendedPlacesToPlace = Bigpromise(async (req, res, next) => {
         return next(new CustomError("No place found.",400))
     }
 
-    const similarPlaces = DescriptionBasedRecommender(placeId)
+    const similarPlaces = await DescriptionBasedRecommender(placeId)
 
-    console.log(similarPlaces);
+    let ids = similarPlaces.map((place) => place.id);
+    let places = await Place.find({_id: ids});
 
 
     res.status(200).json({
         success: true,
-        similarPlaces
+        places
     })
 })
 
+exports.trainRecomendedPlacesToPlace = Bigpromise(async (req, res, next) => {
+
+    await trainDescriptionBasedRecommender()
+
+    res.status(200).json({
+        success: true,
+        message: "The recomendation system has been trained successfully."
+    })
+})
 
