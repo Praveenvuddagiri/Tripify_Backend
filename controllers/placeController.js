@@ -4,7 +4,7 @@ const Bigpromise = require('../middlewares/bigPromise');
 const CustomError = require('../utils/customError');
 const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
-const { DescriptionBasedRecommender, trainDescriptionBasedRecommender } = require('../utils/recomendationSystem');
+const { DescriptionBasedRecommender, trainDescriptionBasedRecommender, getRatingArray } = require('../utils/recomendationSystem');
 
 
 exports.addPlace = Bigpromise(async (req, res, next) => {
@@ -375,3 +375,12 @@ exports.trainRecomendedPlacesToPlace = Bigpromise(async (req, res, next) => {
     })
 })
 
+exports.getRecomendedPlacesToUserCollaborative = Bigpromise(async (req, res, next) => {
+
+    const recomendedPlaces = await getRatingArray(req.user._id.toString());
+
+    res.status(200).json({
+        success: true,
+        recomendedPlaces
+    })
+})
