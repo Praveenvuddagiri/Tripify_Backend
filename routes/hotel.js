@@ -22,6 +22,12 @@ const {
 const { isLoggedIn, customRole } = require('../middlewares/user');
 
 
+//reviews
+router.route('/hotel/review').put(isLoggedIn, addReview);
+router.route('/hotel/review').delete(isLoggedIn, deleteReview);
+router.route('/hotel/reviews').get( getOnlyReviewsForOneHotel);
+router.route('/hotel/userreview').get(isLoggedIn, getReviewOnePersonOneHotel);
+
 // for both serviceprovider and admin
 router.route('/hotel/:id')
     .get( getHotelById)
@@ -37,11 +43,7 @@ router.route('/serviceprovider/hotels')
 router.route('/hotels/all').get(getAllHotels);
 router.route('/hotels/nearby').get(getNearbyHotels);
 
-//reviews
-router.route('/hotel/review').put(isLoggedIn, addReview);
-router.route('/hotel/review').delete(isLoggedIn, deleteReview);
-router.route('/hotel/reviews').get( getOnlyReviewsForOneHotel);
-router.route('/hotel/userreview').get(isLoggedIn, getReviewOnePersonOneHotel);
+
 
 // only for admin
 router.route('/admin/hotel/all').get(isLoggedIn, customRole('admin'), getAllHotelsForAdmin);

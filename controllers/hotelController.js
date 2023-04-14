@@ -83,7 +83,7 @@ exports.getAllHotels = Bigpromise(async (req, res, next) => {
     Obj.pager(resultPerPage);
 
     hotels = await Obj.base.clone();
-    
+
 
     hotels = hotels.map((hot) => {
         hot.governmentAuthorizedLicense = undefined;
@@ -102,11 +102,13 @@ exports.getAllHotels = Bigpromise(async (req, res, next) => {
 exports.getNearbyHotels = Bigpromise(async (req, res, next) => {
     let { lat, long, maxRad } = req.body;
 
+    console.log(req.body);
+
     lat = Number(lat);
     long = Number(long);
     maxRad = Number(maxRad);
 
-    let hotels = await Hotel.find({
+    var hotels = await Hotel.find({
         location: {
             $near: {
                 $geometry: {
@@ -118,14 +120,16 @@ exports.getNearbyHotels = Bigpromise(async (req, res, next) => {
         }
     })
 
-    hotels = hotels.map((hot) => { 
+
+    hotels = hotels.map((hot) => {
         hot.governmentAuthorizedLicense = undefined;
         return hot;
     })
 
-    hotels = hotels.filter((hot) => {
-        hot.isApproved === true
-    })
+
+
+    hotels = hotels.filter((hotel) => hotel.isApproved === true);
+
 
     res.status(200).json({
         success: true,
@@ -144,7 +148,7 @@ exports.getHotelsPerServiceProvider = Bigpromise(async (req, res, next) => {
     const Obj = await new whereCaluse(Hotel.find(), req.query).search().filter();
 
     let hotels = await Obj.base
-    
+
     Obj.pager(resultPerPage);
 
     hotels = await Obj.base.clone();
@@ -214,7 +218,7 @@ exports.updateHotel = Bigpromise(async (req, res, next) => {
             return next(new CustomError("You are not allowed to update this resource.", 401));
         }
     }
-    let images =[]
+    let images = []
 
     if (req.files) {
 
@@ -335,6 +339,7 @@ exports.addReview = Bigpromise(async (req, res, next) => {
     const { rating, comment, hotelId } = req.body
 
 
+
     //sentiment analysis
     let sentiment;
     var Sentiment = require('sentiment');
@@ -382,7 +387,7 @@ exports.addReview = Bigpromise(async (req, res, next) => {
         hotel.reviews.push(review)
         hotel.numberOfReviews = hotel.reviews.length;
     }
-    
+
     hotel.ratings = hotel.reviews.reduce((acc, item) => item.rating + acc, 0) / hotel.reviews.length
 
     await hotel.save({ validateBeforeSave: false })
@@ -412,7 +417,7 @@ exports.deleteReview = Bigpromise(async (req, res, next) => {
         ratings = 0;
     }
 
-    await Hotel.findByIdAndUpdate(placeId, {
+    await Hotel.findByIdAndUpdate(hotelId, {
         reviews,
         ratings,
         numberOfReviews
@@ -429,7 +434,7 @@ exports.deleteReview = Bigpromise(async (req, res, next) => {
 exports.getOnlyReviewsForOneHotel = Bigpromise(async (req, res, next) => {
     const hotelId = req.query.id;
 
-    let hotel = await Place.findById(hotelId)
+    let hotel = await Hotel.findById(hotelId)
 
 
     let stars = hotel.reviews.filter((rev) => rev.rating === 1)
@@ -479,18 +484,22 @@ exports.getReviewOnePersonOneHotel = Bigpromise(async (req, res, next) => {
 
     let hotel = await Hotel.findById(hotelId)
 
+    if (!hotel) {
+        return next(new CustomError("No review found.", 400))
+    }
+
     const UserReview = hotel.reviews.find(
         (rev) => rev.user.toString() === req.user._id.toString()
     )
 
-    if(!UserReview){
-        return next(new CustomError("No review found.",400))
+    if (!UserReview) {
+        return next(new CustomError("No review found.", 400))
     }
 
 
     res.status(200).json({
         success: true,
         review: UserReview,
-        
+
     })
 })

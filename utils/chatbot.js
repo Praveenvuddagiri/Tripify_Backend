@@ -28,7 +28,7 @@ const trainChatBot = async() => {
 }
 
 const askChatBot = async (question) => {
-    const threshold = 0.7;
+    const threshold = 0.6;
     const dir = path.dirname(require.main.filename);
     const datasetPath = path.join(dir, 'model.nlp');
     await manager.load(datasetPath);
