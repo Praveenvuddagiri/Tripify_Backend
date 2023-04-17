@@ -41,7 +41,7 @@ router.route('/serviceprovider/hotels')
 
 //for tourists
 router.route('/hotels/all').get(getAllHotels);
-router.route('/hotels/nearby').get(getNearbyHotels);
+router.route('/hotels/nearby').post(getNearbyHotels);
 
 
 

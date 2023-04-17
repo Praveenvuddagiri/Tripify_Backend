@@ -22,7 +22,7 @@ const { isLoggedIn, customRole } = require('../middlewares/user');
 //to all users
 router.route('/place/all').get( getAllPlaces);
 router.route('/place/:id').get( getPlaceById);
-router.route('/places/nearby').get( getPlacesNearby);
+router.route('/places/nearby').post( getPlacesNearby);
 router.route('/place/similarContent/:id').get(getRecomendedPlacesToPlace);
 router.route('/user/recomendPlaces').get(isLoggedIn, getRecomendedPlacesToUserCollaborative);
 router.route('/review').put(isLoggedIn, addReview);
