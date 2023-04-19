@@ -588,8 +588,7 @@ exports.updateUserDetails = Bigpromise(async (req, res, next) => {
 
      const userId = req.user.id;
      const newData = {
-          name: req.body.name,
-          email: req.body.email
+          name: req.body.name
      }
 
      const user = await User.findByIdAndUpdate(userId, newData, {
