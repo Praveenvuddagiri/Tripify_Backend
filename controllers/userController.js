@@ -16,8 +16,14 @@ exports.signup = Bigpromise(async (req, res, next) => {
 
      let user = await User.findOne({email});
 
-     if(user){
-          await user.remove();
+     if(user && user.otp && user.otpExpiry){
+          res.status(200).json({
+               success: true,
+               notVerified: true
+          })
+     }
+     else if(user){
+          return next(new CustomError('User already exists.', 400));
      }
 
      if (!role) {
