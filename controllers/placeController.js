@@ -10,9 +10,14 @@ const { DescriptionBasedRecommender, trainDescriptionBasedRecommender, getRating
 exports.addPlace = Bigpromise(async (req, res, next) => {
     let imageArray = []
 
+    req.files.images = req.files['images[]'];
+    req.body = JSON.parse(req.body.data)
+    req.body.data = undefined;
+
     if (!req.files) {
         return next(new CustomError("Images are required", 401));
     }
+
 
     if (req.files) {
         for (let index = 0; index < req.files.images.length; index++) {
