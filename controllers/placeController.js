@@ -8,27 +8,27 @@ const { DescriptionBasedRecommender, trainDescriptionBasedRecommender, getRating
 
 
 exports.addPlace = Bigpromise(async (req, res, next) => {
-    // let imageArray = []
+    let imageArray = []
 
-    // if (!req.files) {
-    //     return next(new CustomError("Images are required", 401));
-    // }
+    if (!req.files) {
+        return next(new CustomError("Images are required", 401));
+    }
 
-    // if (req.files) {
-    //     for (let index = 0; index < req.files.images.length; index++) {
-    //         let file = req.files.images[index];
-    //         let result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
-    //             folder: "places",
-    //         });
-    //         imageArray.push({
-    //             id: result.public_id,
-    //             secure_url: result.secure_url
-    //         })
-    //     }
+    if (req.files) {
+        for (let index = 0; index < req.files.images.length; index++) {
+            let file = req.files.images[index];
+            let result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
+                folder: "places",
+            });
+            imageArray.push({
+                id: result.public_id,
+                secure_url: result.secure_url
+            })
+        }
 
-    // }
+    }
     // console.log(imageArray);
-    // req.body.images = imageArray;
+    req.body.images = imageArray;
     // res.status(200).json({
     //         success: true,
     //     })
@@ -71,6 +71,17 @@ exports.getAllPlaces = Bigpromise(async (req, res, next) => {
     })
 })
 
+
+exports.getAllPlacesAdmin = Bigpromise(async (req, res, next) => {
+
+    const places = await Place.find({});
+
+    
+    res.status(200).json({
+        success: true,
+        places
+    })
+})
 exports.getPlaceById = Bigpromise(async (req, res, next) => {
     const place = await Place.findById(req.params.id);
 

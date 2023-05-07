@@ -14,7 +14,8 @@ const {
     getPlacesNearby,
     getRecomendedPlacesToPlace,
     trainRecomendedPlacesToPlace,
-    getRecomendedPlacesToUserCollaborative
+    getRecomendedPlacesToUserCollaborative,
+    getAllPlacesAdmin
 } = require('../controllers/placeController');
 
 const { isLoggedIn, customRole } = require('../middlewares/user');
@@ -37,5 +38,7 @@ router.route('/admin/place/:id')
     .put(isLoggedIn, customRole("admin"), adminUpdatePlace)
 router.route('/admin/place/add').post(isLoggedIn, customRole('admin'), addPlace);
 router.route('/admin/place/similarContent/train').get(isLoggedIn, customRole('admin'), trainRecomendedPlacesToPlace);
+router.route('/admin/place/all').get(isLoggedIn, customRole('admin'), getAllPlacesAdmin);
+
 
 module.exports = router
