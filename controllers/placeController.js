@@ -183,7 +183,7 @@ exports.adminUpdatePlace = Bigpromise(async (req, res, next) => {
 
     place = await Place.findOneAndUpdate(
         { _id: placeId }, // Find the document to update by ID
-        { $set: req.body }, // Update the fields specified in newData
+        { $set: req.body.data }, // Update the fields specified in newData
         { new: true, useFindAndModify: false } // Return the updated document
     );
 
