@@ -248,7 +248,7 @@ exports.updateHotel = Bigpromise(async (req, res, next) => {
         }
 
         if (req.files.governmentAuthorizedLicense) {
-            const imageId = tourOperator.governmentAuthorizedLicense.id;
+            const imageId = hotel.governmentAuthorizedLicense.id;
             await cloudinary.v2.uploader.destroy(imageId);
 
 

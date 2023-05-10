@@ -241,7 +241,7 @@ exports.updateTourOperator = Bigpromise(async (req, res, next) => {
             result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
                 folder: "tour_operators/tariffs",
             });
-            tariff = ({
+            req.body.tariffDocument = ({
                 id: result.public_id,
                 secure_url: result.secure_url
             })
