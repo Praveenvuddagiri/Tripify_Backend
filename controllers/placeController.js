@@ -150,6 +150,13 @@ exports.adminDeletePlaceById = Bigpromise(async (req, res, next) => {
 exports.adminUpdatePlace = Bigpromise(async (req, res, next) => {
     const placeId = req.params.id;
 
+
+    if(req.files && req.files['images[]']){
+        req.files.images  = req.files['images[]']
+        req.files['images[]'] = undefined;
+    }
+
+
     let place = await Place.findById(placeId)
     let imageArray = []
 
@@ -157,7 +164,7 @@ exports.adminUpdatePlace = Bigpromise(async (req, res, next) => {
         return next(new CustomError("No place found", 400));
     }
 
-    if (req.files) {
+    if (req.files && req.files.images) {
 
         for (let index = 0; index < place.images.length; index++) {
             const imageId = place.images[index].id;
@@ -177,9 +184,10 @@ exports.adminUpdatePlace = Bigpromise(async (req, res, next) => {
 
     }
 
-    if (imageArray.length !== 0)
-        req.body.images = imageArray;
-
+    if (imageArray.length !== 0){
+        req.body.data = {}
+        req.body.data.images = imageArray;
+    }
 
     place = await Place.findOneAndUpdate(
         { _id: placeId }, // Find the document to update by ID
