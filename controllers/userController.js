@@ -14,15 +14,15 @@ exports.signup = Bigpromise(async (req, res, next) => {
           return next(new CustomError('Name, Email and Password are required fields.', 400));
      }
 
-     let user = await User.findOne({email});
+     let user = await User.findOne({ email });
 
-     if(user && user.otp && user.otpExpiry){
+     if (user && user.otp && user.otpExpiry) {
           res.status(200).json({
                success: true,
                notVerified: true
           })
      }
-     else if(user){
+     else if (user) {
           return next(new CustomError('User already exists.', 400));
      }
 
@@ -269,7 +269,7 @@ exports.regenerateOTP = Bigpromise(async (req, res, next) => {
           await user.save({ validateBeforeSave: false });
           return next(new CustomError(error.message, 500));
      }
-    
+
      res.status(200).json({
           success: true,
           message: 'New OTP has been sent to your email.',
@@ -278,7 +278,7 @@ exports.regenerateOTP = Bigpromise(async (req, res, next) => {
 
 
 exports.verifyOtp = Bigpromise(async (req, res, next) => {
-     const {otp} = req.body;
+     const { otp } = req.body;
 
      console.log(otp);
      const user = await User.findOne({
@@ -315,7 +315,7 @@ exports.login = Bigpromise(async (req, res, next) => {
           return next(new CustomError("You are not registered to our database.", 400));
      }
 
-     if(user.otp || user.otpExpiry){
+     if (user.otp || user.otpExpiry) {
           return next(new CustomError("Your account is not verified.", 400));
      }
 
@@ -343,6 +343,10 @@ exports.adminOrServiceProviderLogin = Bigpromise(async (req, res, next) => {
      const user = await User.findOne({ email }).select("+password")
      if (!user) {
           return next(new CustomError("You are not registered to our database.", 400));
+     }
+
+     if (user.otp || user.otpExpiry) {
+          return next(new CustomError("Your account is not verified.", 400));
      }
 
      if (user.role === 'user') {
