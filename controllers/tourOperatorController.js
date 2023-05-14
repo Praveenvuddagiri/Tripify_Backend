@@ -6,63 +6,70 @@ const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
 
 exports.addTourOperator = Bigpromise(async (req, res, next) => {
-    // let image, govtDoc, tariff;
-
-    // console.log(req.body);
-
-    // if (!req.files || !req.files.image || ! req.files.governmentAuthorizedLicense || !req.files.tariffDocument) {
-    //     return next(new CustomError("Documents are required", 401));
-    // }
-
-    // if (req.files) {
-    //     let file1 = req.files.image;
-
-    //     let file2 = req.files.governmentAuthorizedLicense;
-
-    //     if (file2.mimetype !== 'application/pdf') {
-    //         return next(new CustomError("For government authorized license PDF format is expected.",401))
-    //     }
-
-    //     let file3 = req.files.tariffDocument;
-
-    //     if (file3.mimetype !== 'application/pdf') {
-    //         return next(new CustomError("For Tariff PDF format is expected.",401))
-    //     }
+    let image, govtDoc, tariff;
 
 
-    //     let result = await cloudinary.v2.uploader.upload(file1.tempFilePath, {
-    //         folder: "tour_operators/company_logo",
-    //     });
-    //     image = ({
-    //         id: result.public_id,
-    //         secure_url: result.secure_url
-    //     })
+    if(typeof req.body.data === "string"){
+        req.body.data = JSON.parse(req.body.data);
+    }
 
-        
-    //     result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
-    //         folder: "tour_operators/licenses",
-    //     });
-    //     govtDoc = ({
-    //         id: result.public_id,
-    //         secure_url: result.secure_url
-    //     })
+    
+
+    if (!req.files || !req.files.image || ! req.files.governmentAuthorizedLicense || !req.files.tariffDocument) {
+        return next(new CustomError("Documents are required", 401));
+    }
+
+    if (req.files) {
+        let file1 = req.files.image;
+
+        let file2 = req.files.governmentAuthorizedLicense;
+
+        if (file2.mimetype !== 'application/pdf') {
+            return next(new CustomError("For government authorized license PDF format is expected.",401))
+        }
+
+        let file3 = req.files.tariffDocument;
+
+        if (file3.mimetype !== 'application/pdf') {
+            return next(new CustomError("For Tariff PDF format is expected.",401))
+        }
+
+
+        let result = await cloudinary.v2.uploader.upload(file1.tempFilePath, {
+            folder: "tour_operators/company_logo",
+        });
+        image = ({
+            id: result.public_id,
+            secure_url: result.secure_url
+        })
 
         
-    //     result = await cloudinary.v2.uploader.upload(file3.tempFilePath, {
-    //         folder: "tour_operators/tariffs",
-    //     });
-    //     tariff = ({
-    //         id: result.public_id,
-    //         secure_url: result.secure_url
-    //     })
+        result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
+            folder: "tour_operators/licenses",
+        });
+        govtDoc = ({
+            id: result.public_id,
+            secure_url: result.secure_url
+        })
 
-    // }
-    // console.log({ image, govtDoc, tariff });
-    // req.body.image = image;
-    // req.body.governmentAuthorizedLicense = govtDoc;
-    // req.body.tariffDocument = tariff;
+        
+        result = await cloudinary.v2.uploader.upload(file3.tempFilePath, {
+            folder: "tour_operators/tariffs",
+        });
+        tariff = ({
+            id: result.public_id,
+            secure_url: result.secure_url
+        })
 
-    // //temporary
+    }
+    console.log({ image, govtDoc, tariff });
+    req.body.data.image = image;
+    req.body.data.governmentAuthorizedLicense = govtDoc;
+    req.body.data.tariffDocument = tariff;
+
+
+
+    //temporary
     // res.status(200).json({
     //     success: true,
     //     image,
@@ -70,9 +77,9 @@ exports.addTourOperator = Bigpromise(async (req, res, next) => {
     //     tariffDocument: tariff
     // })
 
-    req.body.serviceProvider = req.user._id;
+    req.body.data.serviceProvider = req.user._id;
 
-    const tourOperator = await TourOperator.create(req.body);
+    const tourOperator = await TourOperator.create(req.body.data);
 
     res.status(200).json({
         success: true,
