@@ -6,67 +6,76 @@ const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
 
 exports.addRestaurant = Bigpromise(async (req, res, next) => {
-    // let govtDoc, menu;
-    // let imageArray = [];
+    let govtDoc, menu;
+    let imageArray = [];
+
+    if(typeof req.body.data === "string"){
+        req.body.data = JSON.parse(req.body.data);
+    }
+
+    if (req.files && req.files['images[]']) {
+        req.files.images = req.files['images[]']
+        req.files['images[]'] = undefined;
+    }
 
 
-    // if (!req.files || !req.files.images || !req.files.governmentAuthorizedLicense || !req.files.menu) {
-    //     return next(new CustomError("Documents are required", 401));
-    // }
 
-    // if (req.files) {
-    //     let file1 = req.files.images;
+    if (!req.files || !req.files.images || !req.files.governmentAuthorizedLicense || !req.files.menu) {
+        return next(new CustomError("Documents are required", 401));
+    }
 
-    //     let file2 = req.files.governmentAuthorizedLicense;
+    if (req.files) {
+        let file1 = req.files.images;
 
-    //     if (file2.mimetype !== 'application/pdf') {
-    //         return next(new CustomError("For government authorized license PDF format is expected.", 401))
-    //     }
+        let file2 = req.files.governmentAuthorizedLicense;
 
-    //     let file3 = req.files.menu;
+        if (file2.mimetype !== 'application/pdf') {
+            return next(new CustomError("For government authorized license PDF format is expected.", 401))
+        }
 
-    //     if (file3.mimetype !== 'application/pdf') {
-    //         return next(new CustomError("For Menu PDF format is expected.", 401))
-    //     }
+        let file3 = req.files.menu;
 
-
-    //     for (let index = 0; index < file1.length; index++) {
-    //         const img = file1[index];
-
-    //         let result = await cloudinary.v2.uploader.upload(img.tempFilePath, {
-    //             folder: "restaurants/images",
-    //         });
-
-    //         imageArray.push({
-    //             id: result.public_id,
-    //             secure_url: result.secure_url
-    //         })
-
-    //     }
+        if (file3.mimetype !== 'application/pdf') {
+            return next(new CustomError("For Menu PDF format is expected.", 401))
+        }
 
 
-    //     result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
-    //         folder: "restaurants/licenses",
-    //     });
-    //     govtDoc = ({
-    //         id: result.public_id,
-    //         secure_url: result.secure_url
-    //     })
+        for (let index = 0; index < file1.length; index++) {
+            const img = file1[index];
+
+            let result = await cloudinary.v2.uploader.upload(img.tempFilePath, {
+                folder: "restaurants/images",
+            });
+
+            imageArray.push({
+                id: result.public_id,
+                secure_url: result.secure_url
+            })
+
+        }
 
 
-    //     result = await cloudinary.v2.uploader.upload(file3.tempFilePath, {
-    //         folder: "restaurants/menus",
-    //     });
-    //     menu = ({
-    //         id: result.public_id,
-    //         secure_url: result.secure_url
-    //     })
+        result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
+            folder: "restaurants/licenses",
+        });
+        govtDoc = ({
+            id: result.public_id,
+            secure_url: result.secure_url
+        })
 
-    // }
-    // console.log({ imageArray, govtDoc, menu });
-    // req.body.images = imageArray;
-    // req.body.governmentAuthorizedLicense = govtDoc;
-    // req.body.menu = menu;
+
+        result = await cloudinary.v2.uploader.upload(file3.tempFilePath, {
+            folder: "restaurants/menus",
+        });
+        menu = ({
+            id: result.public_id,
+            secure_url: result.secure_url
+        })
+
+    }
+    req.body.data.images = imageArray;
+    req.body.data.governmentAuthorizedLicense = govtDoc;
+    req.body.data.menu = menu;
 
     // //temporary
     // res.status(200).json({
@@ -76,9 +85,9 @@ exports.addRestaurant = Bigpromise(async (req, res, next) => {
     //     menu: menu
     // })
 
-    req.body.serviceProvider = req.user._id;
+    req.body.data.serviceProvider = req.user._id;
 
-    const restaurant = await Restaurant.create(req.body);
+    const restaurant = await Restaurant.create(req.body.data);
 
     res.status(200).json({
         success: true,
