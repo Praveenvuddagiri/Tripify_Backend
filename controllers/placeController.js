@@ -10,9 +10,17 @@ const { DescriptionBasedRecommender, trainDescriptionBasedRecommender, getRating
 exports.addPlace = Bigpromise(async (req, res, next) => {
     let imageArray = []
 
-    req.files.images = req.files['images[]'];
-    req.body = JSON.parse(req.body.data)
-    req.body.data = undefined;
+
+    if (req.files && req.files['images[]']) {
+        req.files.images = req.files['images[]']
+        req.files['images[]'] = undefined;
+    }
+
+    if (typeof req.body.data === "string") {
+        req.body = JSON.parse(req.body.data)
+        req.body.data = undefined;
+    }
+
 
     if (!req.files) {
         return next(new CustomError("Images are required", 401));
@@ -37,7 +45,7 @@ exports.addPlace = Bigpromise(async (req, res, next) => {
     // res.status(200).json({
     //         success: true,
     //     })
-    
+
     const place = await Place.create(req.body);
 
 
@@ -61,11 +69,11 @@ exports.getAllPlaces = Bigpromise(async (req, res, next) => {
     let places = await placesObj.base
     const filteredPlaceNumber = places.length;
     placesObj.pager(resultPerPage);
-    
+
 
     places = await placesObj.base.clone();
 
-    
+
 
 
     res.status(200).json({
@@ -81,7 +89,7 @@ exports.getAllPlacesAdmin = Bigpromise(async (req, res, next) => {
 
     const places = await Place.find({});
 
-    
+
     res.status(200).json({
         success: true,
         places
@@ -102,7 +110,7 @@ exports.getPlaceById = Bigpromise(async (req, res, next) => {
 
 exports.getPlacesNearby = Bigpromise(async (req, res, next) => {
 
-    let {lat, long, maxRad} = req.body;
+    let { lat, long, maxRad } = req.body;
 
     lat = Number(lat);
     long = Number(long);
@@ -110,16 +118,16 @@ exports.getPlacesNearby = Bigpromise(async (req, res, next) => {
 
     const places = await Place.find({
         location: {
-          $near: {
-            $geometry: {
-              type: 'Point',
-              coordinates: [long, lat]
-            },
-            $maxDistance: maxRad // distance in meters, you can adjust this to your needs
-          }
+            $near: {
+                $geometry: {
+                    type: 'Point',
+                    coordinates: [long, lat]
+                },
+                $maxDistance: maxRad // distance in meters, you can adjust this to your needs
+            }
         }
-      })
-    
+    })
+
     res.status(200).json({
         success: true,
         places,
@@ -151,8 +159,8 @@ exports.adminUpdatePlace = Bigpromise(async (req, res, next) => {
     const placeId = req.params.id;
 
 
-    if(req.files && req.files['images[]']){
-        req.files.images  = req.files['images[]']
+    if (req.files && req.files['images[]']) {
+        req.files.images = req.files['images[]']
         req.files['images[]'] = undefined;
     }
 
@@ -184,7 +192,7 @@ exports.adminUpdatePlace = Bigpromise(async (req, res, next) => {
 
     }
 
-    if (imageArray.length !== 0){
+    if (imageArray.length !== 0) {
         req.body.data = {}
         req.body.data.images = imageArray;
     }
@@ -356,15 +364,15 @@ exports.getReviewOnePersonOnePlace = Bigpromise(async (req, res, next) => {
         (rev) => rev.user.toString() === req.user._id.toString()
     )
 
-    if(!UserReview){
-        return next(new CustomError("No review found.",400))
+    if (!UserReview) {
+        return next(new CustomError("No review found.", 400))
     }
 
 
     res.status(200).json({
         success: true,
         review: UserReview,
-        
+
     })
 })
 
@@ -373,14 +381,14 @@ exports.getRecomendedPlacesToPlace = Bigpromise(async (req, res, next) => {
     const placeId = req.params.id;
     let place = await Place.findById(placeId)
 
-    if(!place){
-        return next(new CustomError("No place found.",400))
+    if (!place) {
+        return next(new CustomError("No place found.", 400))
     }
 
     const similarPlaces = await DescriptionBasedRecommender(placeId)
 
     let ids = similarPlaces.map((place) => place.id);
-    let places = await Place.find({_id: ids});
+    let places = await Place.find({ _id: ids });
 
 
     res.status(200).json({
