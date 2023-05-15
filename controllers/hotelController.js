@@ -6,52 +6,61 @@ const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
 
 exports.addHotel = Bigpromise(async (req, res, next) => {
-    // let govtDoc;
-    // let images = [];
+    let govtDoc;
+    let images = [];
 
-    // console.log(req.body);
+    if(typeof req.body.data === "string"){
+        req.body.data = JSON.parse(req.body.data);
+    }
 
-    // if (!req.files || !req.files.images || !req.files.governmentAuthorizedLicense) {
-    //     return next(new CustomError("Documents are required", 401));
-    // }
+    if (req.files && req.files['images[]']) {
+        req.files.images = req.files['images[]']
+        req.files['images[]'] = undefined;
+    }
 
-    // if (req.files) {
-    //     let file1 = req.files.images;
+    console.log(req.body);
+    console.log(req.files);
 
-    //     let file2 = req.files.governmentAuthorizedLicense;
+    if (!req.files || !req.files.images || !req.files.governmentAuthorizedLicense) {
+        return next(new CustomError("Documents are required", 401));
+    }
 
-    //     if (file2.mimetype !== 'application/pdf') {
-    //         return next(new CustomError("For government authorized license PDF format is expected.", 401))
-    //     }
+    if (req.files) {
+        let file1 = req.files.images;
 
+        let file2 = req.files.governmentAuthorizedLicense;
 
-    //     for (let index = 0; index < file1.length; index++) {
-    //         const img = file1[index];
-
-    //         let result = await cloudinary.v2.uploader.upload(img.tempFilePath, {
-    //             folder: "hotels/images",
-    //         });
-
-    //         images.push({
-    //             id: result.public_id,
-    //             secure_url: result.secure_url
-    //         })
-
-    //     }
+        if (file2.mimetype !== 'application/pdf') {
+            return next(new CustomError("For government authorized license PDF format is expected.", 401))
+        }
 
 
-    //     let result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
-    //         folder: "hotels/licenses",
-    //     });
-    //     govtDoc = ({
-    //         id: result.public_id,
-    //         secure_url: result.secure_url
-    //     })
+        for (let index = 0; index < file1.length; index++) {
+            const img = file1[index];
 
-    // }
-    // console.log({ images, govtDoc });
-    // req.body.images = images;
-    // req.body.governmentAuthorizedLicense = govtDoc;
+            let result = await cloudinary.v2.uploader.upload(img.tempFilePath, {
+                folder: "hotels/images",
+            });
+
+            images.push({
+                id: result.public_id,
+                secure_url: result.secure_url
+            })
+
+        }
+
+
+        let result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
+            folder: "hotels/licenses",
+        });
+        govtDoc = ({
+            id: result.public_id,
+            secure_url: result.secure_url
+        })
+
+    }
+    req.body.data.images = images;
+    req.body.data.governmentAuthorizedLicense = govtDoc;
 
     // //temporary
     // res.status(200).json({
@@ -60,9 +69,9 @@ exports.addHotel = Bigpromise(async (req, res, next) => {
     //     governmentAuthorizedLicense: govtDoc
     // })
 
-    req.body.serviceProvider = req.user._id;
+    req.body.data.serviceProvider = req.user._id;
 
-    const hotel = await Hotel.create(req.body);
+    const hotel = await Hotel.create(req.body.data);
 
     res.status(200).json({
         success: true,
