@@ -272,7 +272,7 @@ exports.updateRestaurant = Bigpromise(async (req, res, next) => {
                     folder: "restaurants/images",
                 });
 
-                req.body.images.push({
+                req.body.data.images.push({
                     id: result.public_id,
                     secure_url: result.secure_url
                 })
@@ -290,7 +290,7 @@ exports.updateRestaurant = Bigpromise(async (req, res, next) => {
             result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
                 folder: "restaurants/licenses",
             });
-            req.body.governmentAuthorizedLicense = ({
+            req.body.data.governmentAuthorizedLicense = ({
                 id: result.public_id,
                 secure_url: result.secure_url
             })
@@ -306,7 +306,7 @@ exports.updateRestaurant = Bigpromise(async (req, res, next) => {
             result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
                 folder: "restaurants/menus",
             });
-            req.body.menu = ({
+            req.body.data.menu = ({
                 id: result.public_id,
                 secure_url: result.secure_url
             })
@@ -317,7 +317,7 @@ exports.updateRestaurant = Bigpromise(async (req, res, next) => {
 
     restaurant = await Restaurant.findOneAndUpdate(
         { _id: req.params.id }, // Find the document to update by ID
-        { $set: req.body }, // Update the fields specified in newData
+        { $set: req.body.data }, // Update the fields specified in newData
         { new: true, useFindAndModify: false } // Return the updated document
     );
 

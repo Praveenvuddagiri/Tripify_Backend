@@ -252,7 +252,7 @@ exports.updateHotel = Bigpromise(async (req, res, next) => {
 
             }
 
-            req.body.images = images;
+            req.body.data.images = images;
 
         }
 
@@ -265,7 +265,7 @@ exports.updateHotel = Bigpromise(async (req, res, next) => {
             result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
                 folder: "hotels/licenses",
             });
-            req.body.governmentAuthorizedLicense = ({
+            req.body.data.governmentAuthorizedLicense = ({
                 id: result.public_id,
                 secure_url: result.secure_url
             })
@@ -276,7 +276,7 @@ exports.updateHotel = Bigpromise(async (req, res, next) => {
 
     hotel = await Hotel.findOneAndUpdate(
         { _id: req.params.id }, // Find the document to update by ID
-        { $set: req.body }, // Update the fields specified in newData
+        { $set: req.body.data }, // Update the fields specified in newData
         { new: true, useFindAndModify: false } // Return the updated document
     );
 

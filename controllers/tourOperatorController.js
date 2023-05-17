@@ -205,6 +205,7 @@ exports.updateTourOperator = Bigpromise(async (req, res, next) => {
         }
     }
 
+
     if (req.files) {
 
         if (req.files.image) {
@@ -216,7 +217,7 @@ exports.updateTourOperator = Bigpromise(async (req, res, next) => {
             let result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
                 folder: "tour_operators/company_logo",
             });
-            req.body.image = ({
+            req.body.data.image = ({
                 id: result.public_id,
                 secure_url: result.secure_url
             })
@@ -232,7 +233,7 @@ exports.updateTourOperator = Bigpromise(async (req, res, next) => {
             result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
                 folder: "tour_operators/licenses",
             });
-            req.body.governmentAuthorizedLicense = ({
+            req.body.data.governmentAuthorizedLicense = ({
                 id: result.public_id,
                 secure_url: result.secure_url
             })
@@ -248,7 +249,7 @@ exports.updateTourOperator = Bigpromise(async (req, res, next) => {
             result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
                 folder: "tour_operators/tariffs",
             });
-            req.body.tariffDocument = ({
+            req.body.data.tariffDocument = ({
                 id: result.public_id,
                 secure_url: result.secure_url
             })
@@ -260,7 +261,7 @@ exports.updateTourOperator = Bigpromise(async (req, res, next) => {
 
     tourOperator = await TourOperator.findOneAndUpdate(
         { _id: req.params.id }, // Find the document to update by ID
-        { $set: req.body }, // Update the fields specified in newData
+        { $set: req.body.data }, // Update the fields specified in newData
         { new: true, useFindAndModify: false } // Return the updated document
     );
 
