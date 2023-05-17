@@ -22,7 +22,7 @@ class whereCaluse{
         const categoryId = this.bigQ.categories ?
                             {
                                 categories: {
-                                    $all : this.bigQ.categories.split(',')
+                                    $in : this.bigQ.categories.split(',')
                                 }
                             }: {}
         this.base = this.base.find({...categoryId})

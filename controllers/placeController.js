@@ -5,6 +5,7 @@ const CustomError = require('../utils/customError');
 const cloudinary = require('cloudinary');
 const whereCaluse = require('../utils/whereClause');
 const { DescriptionBasedRecommender, trainDescriptionBasedRecommender, getRatingArray } = require('../utils/recomendationSystem');
+const { getTourItinerary } = require('../utils/itinerary');
 
 
 exports.addPlace = Bigpromise(async (req, res, next) => {
@@ -414,5 +415,25 @@ exports.getRecomendedPlacesToUserCollaborative = Bigpromise(async (req, res, nex
     res.status(200).json({
         success: true,
         recomendedPlaces
+    })
+})
+
+exports.getItineraryPlaces = Bigpromise(async (req,res,next) => {
+    const {lat,long,days} = req.body;
+
+
+
+    const placesObj = await new whereCaluse(Place.find(), req.query).search().categoryFilter().filter();
+
+    let placesAll = await placesObj.base
+
+    placesAll = await placesObj.base.clone();
+
+
+    const places = await getTourItinerary(lat,long,days,placesAll);
+
+    res.status(200).json({
+        success: true,
+        places
     })
 })

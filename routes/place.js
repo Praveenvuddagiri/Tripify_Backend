@@ -15,7 +15,8 @@ const {
     getRecomendedPlacesToPlace,
     trainRecomendedPlacesToPlace,
     getRecomendedPlacesToUserCollaborative,
-    getAllPlacesAdmin
+    getAllPlacesAdmin,
+    getItineraryPlaces,
 } = require('../controllers/placeController');
 
 const { isLoggedIn, customRole } = require('../middlewares/user');
@@ -25,6 +26,7 @@ router.route('/place/all').get( getAllPlaces);
 router.route('/place/:id').get( getPlaceById);
 router.route('/places/nearby').post( getPlacesNearby);
 router.route('/place/similarContent/:id').get(getRecomendedPlacesToPlace);
+router.route('/place/itinerary').post(getItineraryPlaces);
 router.route('/user/recomendPlaces').get(isLoggedIn, getRecomendedPlacesToUserCollaborative);
 router.route('/review').put(isLoggedIn, addReview);
 router.route('/review').delete(isLoggedIn, deleteReview);
