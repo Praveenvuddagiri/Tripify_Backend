@@ -256,6 +256,21 @@ exports.updateRestaurant = Bigpromise(async (req, res, next) => {
         }
     }
 
+    if(typeof req.body.data === "string"){
+        req.body.data = JSON.parse(req.body.data);
+    }
+
+    if (req.files && req.files['images[]']) {
+        req.files.images = req.files['images[]']
+        req.files['images[]'] = undefined;
+    }
+
+    if (!req.body.data) {
+        req.body.data = {};
+    }
+
+    let images = []
+
     if (req.files) {
 
         if (req.files.images) {
@@ -272,12 +287,15 @@ exports.updateRestaurant = Bigpromise(async (req, res, next) => {
                     folder: "restaurants/images",
                 });
 
-                req.body.data.images.push({
+                images.push({
                     id: result.public_id,
                     secure_url: result.secure_url
                 })
 
+                
+
             }
+            req.body.data.images = images;
 
         }
 
@@ -298,7 +316,7 @@ exports.updateRestaurant = Bigpromise(async (req, res, next) => {
 
 
         if (req.files.menu) {
-            const imageId = restaurant.tariffDocument.id;
+            const imageId = restaurant.menu.id;
             await cloudinary.v2.uploader.destroy(imageId);
 
 

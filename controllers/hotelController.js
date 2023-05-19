@@ -9,7 +9,7 @@ exports.addHotel = Bigpromise(async (req, res, next) => {
     let govtDoc;
     let images = [];
 
-    if(typeof req.body.data === "string"){
+    if (typeof req.body.data === "string") {
         req.body.data = JSON.parse(req.body.data);
     }
 
@@ -18,8 +18,6 @@ exports.addHotel = Bigpromise(async (req, res, next) => {
         req.files['images[]'] = undefined;
     }
 
-    console.log(req.body);
-    console.log(req.files);
 
     if (!req.files || !req.files.images || !req.files.governmentAuthorizedLicense) {
         return next(new CustomError("Documents are required", 401));
@@ -227,7 +225,22 @@ exports.updateHotel = Bigpromise(async (req, res, next) => {
             return next(new CustomError("You are not allowed to update this resource.", 401));
         }
     }
+
+
+    if (typeof req.body.data === "string") {
+        req.body.data = JSON.parse(req.body.data);
+    }
+
+    if (req.files && req.files['images[]']) {
+        req.files.images = req.files['images[]']
+        req.files['images[]'] = undefined;
+    }
+
     let images = []
+
+    if (!req.body.data) {
+        req.body.data = {};
+    }
 
     if (req.files) {
 

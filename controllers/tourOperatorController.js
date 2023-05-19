@@ -9,13 +9,13 @@ exports.addTourOperator = Bigpromise(async (req, res, next) => {
     let image, govtDoc, tariff;
 
 
-    if(typeof req.body.data === "string"){
+    if (typeof req.body.data === "string") {
         req.body.data = JSON.parse(req.body.data);
     }
 
-    
 
-    if (!req.files || !req.files.image || ! req.files.governmentAuthorizedLicense || !req.files.tariffDocument) {
+
+    if (!req.files || !req.files.image || !req.files.governmentAuthorizedLicense || !req.files.tariffDocument) {
         return next(new CustomError("Documents are required", 401));
     }
 
@@ -25,13 +25,13 @@ exports.addTourOperator = Bigpromise(async (req, res, next) => {
         let file2 = req.files.governmentAuthorizedLicense;
 
         if (file2.mimetype !== 'application/pdf') {
-            return next(new CustomError("For government authorized license PDF format is expected.",401))
+            return next(new CustomError("For government authorized license PDF format is expected.", 401))
         }
 
         let file3 = req.files.tariffDocument;
 
         if (file3.mimetype !== 'application/pdf') {
-            return next(new CustomError("For Tariff PDF format is expected.",401))
+            return next(new CustomError("For Tariff PDF format is expected.", 401))
         }
 
 
@@ -43,7 +43,7 @@ exports.addTourOperator = Bigpromise(async (req, res, next) => {
             secure_url: result.secure_url
         })
 
-        
+
         result = await cloudinary.v2.uploader.upload(file2.tempFilePath, {
             folder: "tour_operators/licenses",
         });
@@ -52,7 +52,7 @@ exports.addTourOperator = Bigpromise(async (req, res, next) => {
             secure_url: result.secure_url
         })
 
-        
+
         result = await cloudinary.v2.uploader.upload(file3.tempFilePath, {
             folder: "tour_operators/tariffs",
         });
@@ -105,7 +105,7 @@ exports.getAllTourOperators = Bigpromise(async (req, res, next) => {
     tourOperators = await Obj.base.clone();
 
 
-    tourOperators = tourOperators.map((to) =>{
+    tourOperators = tourOperators.map((to) => {
         to.governmentAuthorizedLicense = undefined;
         return to;
     })
@@ -160,15 +160,15 @@ exports.getTourOperatorById = Bigpromise(async (req, res, next) => {
 exports.deleteTourOperatorById = Bigpromise(async (req, res, next) => {
 
 
-    
+
     const tourOperator = await TourOperator.findById(req.params.id);
     if (tourOperator === null) {
         return next(new CustomError("No Tour operator found", 401));
     }
 
-    if(req.user.role !== "admin"){
+    if (req.user.role !== "admin") {
 
-        if(tourOperator.serviceProvider.toString() !== req.user._id.toString()){
+        if (tourOperator.serviceProvider.toString() !== req.user._id.toString()) {
             return next(new CustomError("You are not allowed to delete this resource.", 401));
         }
     }
@@ -195,18 +195,27 @@ exports.deleteTourOperatorById = Bigpromise(async (req, res, next) => {
 exports.updateTourOperator = Bigpromise(async (req, res, next) => {
     let tourOperator = await TourOperator.findById(req.params.id)
 
+    if (typeof req.body.data === "string") {
+        req.body.data = JSON.parse(req.body.data);
+    }
+
     if (tourOperator === null) {
         return next(new CustomError("No Tour Operator found", 400));
     }
 
-    if(req.user.role !== "admin"){
-        if(tourOperator.serviceProvider.toString() !== req.user._id.toString()){
+    if (req.user.role !== "admin") {
+        if (tourOperator.serviceProvider.toString() !== req.user._id.toString()) {
             return next(new CustomError("You are not allowed to update this resource.", 401));
         }
     }
 
+    if(!req.body.data){
+        req.body.data = {};
+    }
+
 
     if (req.files) {
+
 
         if (req.files.image) {
             const imageId = tourOperator.image.id;
@@ -308,7 +317,7 @@ exports.unapproveTourOperator = Bigpromise(async (req, res, next) => {
 
 
 exports.getUnapprovedTourOperators = Bigpromise(async (req, res, next) => {
-    let tourOperators = await TourOperator.find({isApproved: false})
+    let tourOperators = await TourOperator.find({ isApproved: false })
 
     res.status(200).json({
         success: true,
