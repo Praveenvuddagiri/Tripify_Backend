@@ -738,7 +738,7 @@ exports.userGiveFeedbackTourist = Bigpromise(async (req, res, next) => {
 
 exports.adminGetAllFeedbacks = Bigpromise(async (req, res, next) => {
 
-     const feedbacks = await Feedback.find().sort({createdAt: 1});
+     const feedbacks = await Feedback.find().sort({createdAt: -1});
 
      res.status(200).json({
           success: true,

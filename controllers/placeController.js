@@ -65,7 +65,7 @@ exports.getAllPlaces = Bigpromise(async (req, res, next) => {
 
 
 
-    const placesObj = await new whereCaluse(Place.find(), req.query).search().categoryFilter().filter();
+    const placesObj = await new whereCaluse(Place.find(), req.query).search().categoryFilter().filter().sort();
 
     let places = await placesObj.base
     const filteredPlaceNumber = places.length;
