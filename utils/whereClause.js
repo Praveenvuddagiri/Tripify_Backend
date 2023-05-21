@@ -18,6 +18,11 @@ class whereCaluse{
         return this;
     }
 
+    sort(){
+        this.base = this.base.sort({ name: 1 });
+        return this; 
+    }
+
     categoryFilter(){
         const categoryId = this.bigQ.categories ?
                             {

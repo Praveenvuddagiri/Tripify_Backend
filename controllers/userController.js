@@ -5,6 +5,7 @@ const CustomError = require('../utils/customError');
 const cookieToken = require('../utils/cookieToken');
 const mailHelper = require('../utils/emailHelper');
 const crypto = require('crypto');
+const Feedback = require('../models/feedback');
 
 
 exports.signup = Bigpromise(async (req, res, next) => {
@@ -709,6 +710,38 @@ exports.userRemovePlaceFromWishlist = Bigpromise(async (req, res, next) => {
      })
 });
 
+//feedbacks
+
+exports.userGiveFeedbackTourist = Bigpromise(async (req, res, next) => {
+
+     const user = req.user;
+
+     if(!req.body.description){
+          return next(new CustomError("Feedback is required.", 401));
+     }
+
+     const feed = {
+          user: user._id,
+          name: user.name,
+          email: user.email,
+          description: req.body.description
+     }
+
+     await Feedback.create(feed);
+
+     res.status(200).json({
+          success: true,
+          message: "Thank you for your feedback!"
+     })
+});
 
 
+exports.adminGetAllFeedbacks = Bigpromise(async (req, res, next) => {
 
+     const feedbacks = await Feedback.find().sort({createdAt: 1});
+
+     res.status(200).json({
+          success: true,
+          feedbacks
+     })
+});

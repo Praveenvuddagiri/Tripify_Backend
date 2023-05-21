@@ -83,7 +83,7 @@ exports.getAllHotels = Bigpromise(async (req, res, next) => {
 
     req.query.isApproved = true;
 
-    const Obj = await new whereCaluse(Hotel.find(), req.query).search().filter();
+    const Obj = await new whereCaluse(Hotel.find(), req.query).search().filter().sort();
 
     let hotels = await Obj.base
     const filteredNumber = hotels.length;

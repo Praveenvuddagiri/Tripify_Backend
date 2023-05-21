@@ -19,7 +19,9 @@ const {
     userAddPlaceToWishlist,
     userRemovePlaceFromWishlist,
     regenerateOTP,
-    verifyOtp
+    verifyOtp,
+    userGiveFeedbackTourist,
+    adminGetAllFeedbacks
 } = require('../controllers/userController');
 const { isLoggedIn, customRole } = require('../middlewares/user');
 
@@ -48,4 +50,10 @@ router.
 //wishlist
 router.route('/wishlist/addplace').put(isLoggedIn, userAddPlaceToWishlist)
 router.route('/wishlist/removeplace').delete(isLoggedIn, userRemovePlaceFromWishlist)
+
+//feedback
+router.route('/feedback/add').post(isLoggedIn, userGiveFeedbackTourist)
+router.route('/feedback/all').get(isLoggedIn, customRole('admin'), adminGetAllFeedbacks )
+
+
 module.exports = router;

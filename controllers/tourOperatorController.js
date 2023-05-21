@@ -96,7 +96,7 @@ exports.getAllTourOperators = Bigpromise(async (req, res, next) => {
     req.query.isApproved = true;
 
 
-    const Obj = await new whereCaluse(TourOperator.find(), req.query).search().filter();
+    const Obj = await new whereCaluse(TourOperator.find(), req.query).search().sort().filter();
 
     let tourOperators = await Obj.base
     const filteredNumber = tourOperators.length;
@@ -109,6 +109,7 @@ exports.getAllTourOperators = Bigpromise(async (req, res, next) => {
         to.governmentAuthorizedLicense = undefined;
         return to;
     })
+
 
 
     res.status(200).json({

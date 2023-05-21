@@ -103,7 +103,7 @@ exports.getAllRestaurants = Bigpromise(async (req, res, next) => {
     req.query.isApproved = true;
 
 
-    const Obj = await new whereCaluse(Restaurant.find(), req.query).search().filter();
+    const Obj = await new whereCaluse(Restaurant.find(), req.query).search().filter().sort();
 
     let restaurants = await Obj.base
     const filteredNumber = restaurants.length;
