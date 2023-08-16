@@ -109,7 +109,7 @@ exports.signup = Bigpromise(async (req, res, next) => {
      <body>
           <div class="container">
                <h1>Verify Your Tripify Account</h1>
-               <img style="width: 200px; height: auto;" src="https://res.cloudinary.com/diowg4rud/image/upload/v1677856928/WhatsApp_Image_2023-03-03_at_20.17.29-removebg-preview_neo00m.png"/>
+               <img style="width: 200px; height: auto;" src="${process.env.logoUrl}"/>
                <p>Dear Valued User,</p>
                <p>We have received a request for creation of Tripify account. If you did not initiate this request, please ignore this email.</p>
 
